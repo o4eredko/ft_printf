@@ -1,7 +1,9 @@
+#include "ft_printf.h"
 #include <stdio.h>
 
-int main()
+int main(void)
 {
-	printf("Hello, World!\n");
-	return 0;
+	printf("Hello world\n");
+	ft_printf("Hello world\n");
+	return (0);
 }
