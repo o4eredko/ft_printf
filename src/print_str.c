@@ -16,11 +16,11 @@ void	ft_putchar(char c, t_params *params)
 {
 	if (params && params->flag != '-' && params->width)
 		while (params->width-- > 1)
-			write(1, " ", 1);
+			write(1, (params->flag == '0') ? "0" : " ", 1);
 	write(1, &c, 1);
 	if (params && params->flag == '-' && params->width)
 		while (params->width-- > 1)
-			write(1, " ", 1);
+			write(1, (params->flag == '0') ? "0" : " ", 1);
 }
 
 void	ft_putstr(const char *s, t_params *params)
@@ -30,7 +30,7 @@ void	ft_putstr(const char *s, t_params *params)
 	len = (int)ft_strlen(s);
 	if (params->flag != '-' && params->width)
 		while (params->width-- > len)
-			ft_putchar(' ', NULL);
+			ft_putchar((params->flag == '0') ? '0' : ' ', NULL);
 	while (*s)
 	{
 		ft_putchar(*s, NULL);
@@ -38,7 +38,7 @@ void	ft_putstr(const char *s, t_params *params)
 	}
 	if (params->flag == '-' && params->width)
 		while (params->width-- > len)
-			ft_putchar(' ', NULL);
+			ft_putchar((params->flag == '0') ? '0' : ' ', NULL);
 }
 
 void	ft_va_putchar(va_list ap, t_params *params)

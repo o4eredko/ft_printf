@@ -35,6 +35,6 @@ re: fclean all
 
 run: fclean all
 	gcc src/main.c -L. -lftprintf
-	./a.out
 	clear
+	./a.out
 	@make clean --silent

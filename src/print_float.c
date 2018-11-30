@@ -12,34 +12,6 @@
 
 #include "ft_printf.h"
 
-void		ft_putfloat(double nb, t_params *params)
-{
-	char 	*res;
-	char 	*res_tmp;
-	int 	int_p;
-	int 	len;
-
-	int_p = (int)nb;
-	len = (count_digits(int_p, 10) + 1 + 6);/*presicion*/
-	res = ft_strnew((unsigned int)len);
-	res_tmp = ft_itoa_base(int_p, 10);
-	ft_strcpy(res, res_tmp);
-	free(res_tmp);
-	res_tmp = res;
-	res += ft_strlen(res);
-	nb = (nb < 0) ? nb + int_p : nb - int_p;
-	*res++ = '.';
-	len -= ft_strlen(res_tmp);
-	while (len--)
-	{
-		nb *= 10;
-		*res++ = ((int)nb) ? nb + '0' : '0';
-		nb -= (int)nb;
-	}
-	ft_putstr(res_tmp, params);
-	free(res_tmp);
-}
-
 long long ft_power(int nb, int power)
 {
 	long long res;
@@ -50,6 +22,30 @@ long long ft_power(int nb, int power)
 	while (power--)
 		res *= nb;
 	return (res);
+}
+
+void		ft_va_putfloat(va_list ap, t_params *params)
+{
+	long double	nbr;
+	char 		*res;
+	char 		*res_tmp;
+
+	if (params->flag == 'L')
+		nbr = va_arg(ap, long double);
+	else
+		nbr = va_arg(ap, double);
+	res = ft_strnew((unsigned int)(count_digits(((int)nbr), 10) + 1 + params->precision));
+	res_tmp = ft_itoa_base((int)nbr, 10);
+	ft_strcpy(res, res_tmp);
+	free(res_tmp);
+	res_tmp = res;
+	res += ft_strlen(res);
+	nbr = (nbr - (int)nbr) * (nbr < 0 ? -1 : 1);
+	*res++ = '.';
+	nbr *= ft_power(10, params->precision);
+	ft_strcpy(res, ft_itoa_base((int)(nbr + 0.5), 10));
+	ft_putstr(res_tmp, params);
+	free(res_tmp);
 }
 
 //void		ft_put_s_notation(double nb, t_params *params)

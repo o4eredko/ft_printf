@@ -55,6 +55,7 @@ void		handle_expression(va_list ap, const char **format)
 	if (flag_list(format))
 		handle_flag(format, &params);
 	handle_width(format, &params);
+	params.precision = 6;
 	if (type_id(**format) != -1 || **format == '%')
 	{
 		if (**format == '%')

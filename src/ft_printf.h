@@ -20,6 +20,7 @@
 typedef struct		s_params
 {
 	int 			width;
+	int 			precision;
 	char 			flag;
 	char 			type;
 }					t_params;
@@ -33,6 +34,7 @@ void	ft_va_putoctal(va_list ap, t_params *params);
 void	ft_va_puthex(va_list ap, t_params *params);
 void	ft_va_l_puthex(va_list ap, t_params *params);
 void	ft_va_putpointer(va_list ap, t_params *params);
+void	ft_va_putfloat(va_list ap, t_params *params);
 
 void	ft_putchar(char c, t_params *params);
 void	ft_putstr(const char *s, t_params *params);

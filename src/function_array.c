@@ -22,6 +22,7 @@ void	fill_function_arr(void (*f[10])(va_list, t_params*))
 	f[5] = ft_va_puthex;
 	f[6] = ft_va_l_puthex;
 	f[7] = ft_va_putpointer;
+	f[8] = ft_va_putfloat;
 }
 
 int		type_id(char c)
@@ -45,5 +46,7 @@ int		type_id(char c)
 		res = 6;
 	if (c == 'p')
 		res = 7;
+	if (c == 'f')
+		res = 8;
 	return (res);
 }
