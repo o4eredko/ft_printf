@@ -25,9 +25,9 @@ void	ft_putchar(char c, t_params *params)
 
 void	ft_putstr(const char *s, t_params *params)
 {
-	size_t	len;
+	int	len;
 
-	len = ft_strlen(s);
+	len = (int)ft_strlen(s);
 	if (params->flag != '-' && params->width)
 		while (params->width-- > len)
 			ft_putchar(' ', NULL);
@@ -51,7 +51,6 @@ void	ft_va_putchar(va_list ap, t_params *params)
 
 void	ft_va_putstr(va_list ap, t_params *params)
 {
-	size_t	len;
 	char 	*s;
 
 	s = va_arg(ap, char*);

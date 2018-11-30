@@ -55,12 +55,12 @@ void		handle_expression(va_list ap, const char **format)
 	if (flag_list(format))
 		handle_flag(format, &params);
 	handle_width(format, &params);
-	if (type_id(**format, &params) != -1 || **format == '%')
+	if (type_id(**format) != -1 || **format == '%')
 	{
 		if (**format == '%')
 			ft_putchar(**format, &params);
 		else
-			f[type_id(**format, &params)](ap, &params);
+			f[type_id(**format)](ap, &params);
 		(*format)++;
 	}
 }

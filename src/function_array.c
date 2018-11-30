@@ -24,7 +24,7 @@ void	fill_function_arr(void (*f[10])(va_list, t_params*))
 	f[7] = ft_va_putpointer;
 }
 
-int		type_id(char c, t_params *params)
+int		type_id(char c)
 {
 	int res;
 

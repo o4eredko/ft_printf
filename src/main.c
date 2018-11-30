@@ -15,7 +15,7 @@
 
 int main(void)
 {
-	printf("%d%%\n", 123412342314312);
-	ft_printf("%d%%\n", 123412342314312);
+	printf("%d%%\n", 123);
+	ft_printf("%d%%\n", 123);
 	return (0);
 }
