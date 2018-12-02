@@ -15,7 +15,7 @@
 
 int main(void)
 {
-	printf("%f\n", 257.3124214113);
-	ft_printf("%f\n", 257.3124214113);
+	printf("%f\n", -124214.12531251);
+	ft_printf("%f\n", -124214.12531251);
 	return (0);
 }

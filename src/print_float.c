@@ -24,58 +24,72 @@ long long ft_power(int nb, int power)
 	return (res);
 }
 
+void		ft_strrev(char *str, int len)
+{
+	char	c;
+	int 	i;
+
+	i = -1;
+	while (++i < --len)
+	{
+		c = str[i];
+		str[i] = str[len];
+		str[len] = c;
+	}
+}
+
+int			ft_int_to_str(int nbr, char *res, int precision)
+{
+	int i;
+
+	i = 0;
+	while (nbr)
+	{
+		res[i++] = (nbr < 0 ? -(nbr % 10) : nbr % 10) + '0';
+		nbr /= 10;
+	}
+	while (i < precision)
+		res[i++] = '0';
+	ft_strrev(res, i);
+	return (i);
+}
+
+void		ft_dtoa(long double nbr, char *res, int precision)
+{
+	int i_part;
+	long double f_part;
+	int i;
+
+	i_part = (int) nbr;
+	f_part = nbr - (long double)i_part;
+	i = ft_int_to_str(i_part, res, 1);
+	if (precision)
+	{
+		res[i] = '.';
+		f_part *= ft_power(10, precision);
+		f_part *= f_part < 0 ? -1 : 1;
+		if ((int)(f_part * 10) % ft_power(10, precision + 1) >= 5)
+			f_part++;
+		ft_int_to_str((int)f_part, &res[i + 1], precision);
+	}
+}
+
 void		ft_va_putfloat(va_list ap, t_params *params)
 {
 	long double	nbr;
 	char 		*res;
-	char 		*res_tmp;
 
 	if (params->flag == 'L')
 		nbr = va_arg(ap, long double);
 	else
 		nbr = va_arg(ap, double);
-	res = ft_strnew((unsigned int)(count_digits(((int)nbr), 10) + 1 + params->precision));
-	res_tmp = ft_itoa_base((int)nbr, 10);
-	ft_strcpy(res, res_tmp);
-	free(res_tmp);
-	res_tmp = res;
-	res += ft_strlen(res);
-	nbr = (nbr - (int)nbr) * (nbr < 0 ? -1 : 1);
-	*res++ = '.';
-	nbr *= ft_power(10, params->precision);
-	ft_strcpy(res, ft_itoa_base((int)(nbr + 0.5), 10));
-	ft_putstr(res_tmp, params);
-	free(res_tmp);
+	res = ft_strnew((unsigned int)(count_digits(((int)nbr), 10)
+			+ 1 + params->precision));
+	if (nbr < 0)
+		*res++ = '-';
+	ft_dtoa(nbr, res, params->precision);
+	if (nbr < 0)
+		res--;
+	ft_putstr(res, params);
+	free(res);
 }
-
-//void		ft_put_s_notation(double nb, t_params *params)
-//{
-//	int		exp;
-//	int 	len;
-//	char	*res;
-//	char	*res_tmp;
-//
-//	exp = 1;
-//	len = 6 + 6;//+presicion
-//	res = ft_strnew((unsigned int)len);
-//	while ((int)nb / ft_power(10, exp) < 0 || (int)nb / ft_power(10, exp) > 9)
-//		exp++;
-//	res_tmp = ft_itoa_base(exp, 10);
-//	ft_strcpy(&res[len - 4], exp >= 0 ? "e+" : "e-");
-//	if (exp > 10)
-//		res[len - 2] = '0';
-//	ft_strcpy(&res[exp < 10 && exp > -10 ? len - 1 : len - 2], res_tmp);
-//	len -= 6 + ft_strlen(res_tmp);
-//	free(res_tmp);
-//	res_tmp = res;
-//	*res++ = (int)nb + '0';
-//	*res++ = '.';
-//	while (len--)
-//	{
-//		nb *= 10;
-//		*res++ = ((int)nb) ? nb + '0' : '0';
-//		nb -= (int)nb;
-//	}
-//	ft_putstr(res_tmp, params);
-//	free(res_tmp);
-//}
