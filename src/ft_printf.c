@@ -45,17 +45,26 @@ void		handle_width(const char **format, t_params *params)
 		(*format)++;
 }
 
+void		handle_precision(const char **format, t_params *params)
+{
+	(*format)++;
+	params->precision = ft_atoi(*format);
+	(*format) += count_digits(params->precision, 10);
+}
+
 void		handle_expression(va_list ap, const char **format)
 {
 	t_params	params;
 	void		(*f[10])(va_list, t_params*);
 
+	params.precision = 0;
 	fill_function_arr(f);
 	(*format)++;
 	if (flag_list(format))
 		handle_flag(format, &params);
 	handle_width(format, &params);
-	params.precision = 6;
+	if (**format == '.')
+		handle_precision(format, &params);
 	if (type_id(**format) != -1 || **format == '%')
 	{
 		if (**format == '%')

@@ -68,7 +68,7 @@ void		ft_dtoa(long double nbr, char *res, int precision)
 		res[i] = '.';
 		f_part *= ft_power(10, precision);
 		f_part *= f_part < 0 ? -1 : 1;
-		if ((int)(f_part * 10) % ft_power(10, precision + 1) >= 5)
+		if ((int)(f_part * 10) % ft_power(10, precision) >= 5)
 			f_part++;
 		ft_int_to_str((int)f_part, &res[i + 1], precision);
 	}
@@ -83,11 +83,11 @@ void		ft_va_putfloat(va_list ap, t_params *params)
 		nbr = va_arg(ap, long double);
 	else
 		nbr = va_arg(ap, double);
-	res = ft_strnew((unsigned int)(count_digits(((int)nbr), 10)
-			+ 1 + params->precision));
+	res = ft_strnew((unsigned int)(count_digits((int)nbr, 10)
+			+ 1 + (params->precision ? params->precision : 6)));
 	if (nbr < 0)
 		*res++ = '-';
-	ft_dtoa(nbr, res, params->precision);
+	ft_dtoa(nbr, res, params->precision ? params->precision : 6);
 	if (nbr < 0)
 		res--;
 	ft_putstr(res, params);
