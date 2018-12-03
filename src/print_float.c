@@ -12,9 +12,9 @@
 
 #include "ft_printf.h"
 
-long long ft_power(int nb, int power)
+unsigned long long ft_power(long long nb, int power)
 {
-	long long res;
+	unsigned long long	res;
 
 	res = 1;
 	if (power <= 0)
@@ -38,7 +38,7 @@ void		ft_strrev(char *str, int len)
 	}
 }
 
-int			ft_int_to_str(int nbr, char *res, int precision)
+int		ft_int_to_str(long long nbr, char *res, int precision)
 {
 	int i;
 
@@ -56,21 +56,20 @@ int			ft_int_to_str(int nbr, char *res, int precision)
 
 void		ft_dtoa(long double nbr, char *res, int precision)
 {
-	int i_part;
-	long double f_part;
-	int i;
+	long long 	i_part;
+	long double	f_part;
+	long long	i;
 
-	i_part = (int) nbr;
+	i_part = (long long)nbr;
 	f_part = nbr - (long double)i_part;
 	i = ft_int_to_str(i_part, res, 1);
 	if (precision)
 	{
 		res[i] = '.';
 		f_part *= ft_power(10, precision);
-		f_part *= f_part < 0 ? -1 : 1;
-		if ((int)(f_part * 10) % ft_power(10, precision) >= 5)
+		if ((int)((f_part - (long long)f_part) * 10) >= 5)
 			f_part++;
-		ft_int_to_str((int)f_part, &res[i + 1], precision);
+		ft_int_to_str((long long)f_part, &res[i + 1], precision);
 	}
 }
 
@@ -79,17 +78,16 @@ void		ft_va_putfloat(va_list ap, t_params *params)
 	long double	nbr;
 	char 		*res;
 
-	if (params->flag == 'L')
+	if (find_flag(params->flag, 'L'))
 		nbr = va_arg(ap, long double);
 	else
 		nbr = va_arg(ap, double);
-	res = ft_strnew((unsigned int)(count_digits((int)nbr, 10)
+	res = ft_strnew((unsigned int)(count_ll_digits((long long)nbr, 10)
 			+ 1 + (params->precision ? params->precision : 6)));
 	if (nbr < 0)
 		*res++ = '-';
-	ft_dtoa(nbr, res, params->precision ? params->precision : 6);
+	ft_dtoa(nbr < 0 ? -nbr : nbr, res, params->precision ? params->precision : 6);
 	if (nbr < 0)
 		res--;
-	ft_putstr(res, params);
-	free(res);
+	ft_format_str(res, params);
 }

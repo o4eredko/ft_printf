@@ -17,19 +17,18 @@ void 	ft_va_putnbr(va_list ap, t_params *params)
 	char		*str;
 	long long	nbr;
 
-	if (params->flag == 'c')
+	if (find_flag(params->flag, 'c'))
 		nbr = (char)va_arg(ap, int);
-	else if (params->flag == 'h')
-		nbr = (unsigned short)va_arg(ap, int);
-	else if (params->flag == 'i')
+	else if (find_flag(params->flag, 'h'))
+		nbr = (short)va_arg(ap, int);
+	else if (find_flag(params->flag, 'i'))
 		nbr = va_arg(ap, long long);
-	else if (params->flag == 'l')
+	else if (find_flag(params->flag, 'l'))
 		nbr = va_arg(ap, long);
 	else
 		nbr = va_arg(ap, int);
 	str = ft_ll_itoa_base(nbr, 10);
-	ft_putstr(str, params);
-	free(str);
+	ft_format_str(str, params);
 }
 
 void 	ft_va_putunbr(va_list ap, t_params *params)
@@ -37,19 +36,18 @@ void 	ft_va_putunbr(va_list ap, t_params *params)
 	char				*str;
 	unsigned long long	nbr;
 
-	if (params->flag == 'c')
+	if (find_flag(params->flag, 'c'))
 		nbr = (unsigned char)va_arg(ap, unsigned int);
-	else if (params->flag == 'h')
+	else if (find_flag(params->flag, 'h'))
 		nbr = (unsigned short)va_arg(ap, unsigned int);
-	else if (params->flag == 'i')
+	else if (find_flag(params->flag, 'i'))
 		nbr = va_arg(ap, unsigned long long);
-	else if (params->flag == 'l')
+	else if (find_flag(params->flag, 'l') || find_flag(params->flag, 'z'))
 		nbr = va_arg(ap, unsigned long);
 	else
 		nbr = va_arg(ap, unsigned int);
 	str = ft_ll_itoa_base(nbr, 10);
-	ft_putstr(str, params);
-	free(str);
+	ft_format_str(str, params);
 }
 
 void	ft_va_putoctal(va_list ap, t_params *params)
@@ -57,19 +55,18 @@ void	ft_va_putoctal(va_list ap, t_params *params)
 	unsigned long long	nbr;
 	char				*res;
 
-	if (params->flag == 'c')
+	if (find_flag(params->flag, 'c'))
 		nbr = (unsigned char)va_arg(ap, unsigned int);
-	else if (params->flag == 'h')
+	else if (find_flag(params->flag, 'h'))
 		nbr = (unsigned short)va_arg(ap, unsigned int);
-	else if (params->flag == 'i')
+	else if (find_flag(params->flag, 'i'))
 		nbr = va_arg(ap, unsigned long long);
-	else if (params->flag == 'l')
+	else if (find_flag(params->flag, 'l') || find_flag(params->flag, 'z'))
 		nbr = va_arg(ap, unsigned long);
 	else
 		nbr = va_arg(ap, unsigned int);
 	res = ft_ll_itoa_base(nbr, 8);
-	ft_putstr(res, params);
-	free(res);
+	ft_format_str(res, params);
 }
 
 void	ft_va_puthex(va_list ap, t_params *params)
@@ -77,19 +74,18 @@ void	ft_va_puthex(va_list ap, t_params *params)
 	unsigned long long	nbr;
 	char				*res;
 
-	if (params->flag == 'c')
+	if (find_flag(params->flag, 'c'))
 		nbr = (unsigned char)va_arg(ap, unsigned int);
-	else if (params->flag == 'h')
+	else if (find_flag(params->flag, 'h'))
 		nbr = (unsigned short)va_arg(ap, unsigned int);
-	else if (params->flag == 'i')
+	else if (find_flag(params->flag, 'i'))
 		nbr = va_arg(ap, unsigned long long);
-	else if (params->flag == 'l')
+	else if (find_flag(params->flag, 'l') || find_flag(params->flag, 'z'))
 		nbr = va_arg(ap, unsigned long);
 	else
 		nbr = va_arg(ap, unsigned int);
 	res = ft_ll_itoa_base(nbr, 16);
-	ft_putstr(res, params);
-	free(res);
+	ft_format_str(res, params);
 }
 
 void	ft_va_l_puthex(va_list ap, t_params *params)
@@ -98,13 +94,13 @@ void	ft_va_l_puthex(va_list ap, t_params *params)
 	char				*res;
 	char 			*res_tmp;
 
-	if (params->flag == 'c')
+	if (find_flag(params->flag, 'c'))
 		nbr = (unsigned char)va_arg(ap, unsigned int);
-	else if (params->flag == 'h')
+	else if (find_flag(params->flag, 'h'))
 		nbr = (unsigned short)va_arg(ap, unsigned int);
-	else if (params->flag == 'i')
+	else if (find_flag(params->flag, 'i'))
 		nbr = va_arg(ap, unsigned long long);
-	else if (params->flag == 'l')
+	else if (find_flag(params->flag, 'l') || find_flag(params->flag, 'z'))
 		nbr = va_arg(ap, unsigned long);
 	else
 		nbr = va_arg(ap, unsigned int);
@@ -116,6 +112,5 @@ void	ft_va_l_puthex(va_list ap, t_params *params)
 			*res_tmp += 32;
 		res_tmp++;
 	}
-	ft_putstr(res, params);
-	free(res);
+	ft_format_str(res, params);
 }

@@ -15,7 +15,7 @@
 
 int main(void)
 {
-	printf("%.6f\n", -124214.12531251);
-	ft_printf("%.6f\n", -124214.12531251);
+	printf("|%#15x|\n", 42);
+	ft_printf("|%#15x|\n", 42);
 	return (0);
 }

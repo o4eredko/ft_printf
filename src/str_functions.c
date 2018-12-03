@@ -22,6 +22,49 @@ size_t	ft_strlen(const char *string)
 	return (len);
 }
 
+void	*ft_memset(void *b, int c, size_t len)
+{
+	unsigned char	*ptr;
+
+	ptr = (unsigned char *)b;
+	if (len)
+	{
+		while (len--)
+			*ptr++ = (unsigned char)c;
+	}
+	return (b);
+}
+
+char	*ft_strjoin(char *s1, char *s2)
+{
+	char	*str_tmp;
+	char	*res_tmp;
+	char 	*res;
+
+	res = ft_strnew(ft_strlen(s1) + ft_strlen(s2));
+	str_tmp = s1;
+	res_tmp = res;
+	while (*s1)
+		*res++ = *s1++;
+	if (str_tmp)
+		free(str_tmp);
+	str_tmp = s2;
+	while (*s2)
+		*res++ = *s2++;
+	if (str_tmp)
+		free(str_tmp);
+	*res = '\0';
+	return (res_tmp);
+}
+
+void	ft_strclr(char *s)
+{
+	if (!s)
+		return ;
+	while (*s)
+		*s++ = '\0';
+}
+
 char	*ft_strnew(size_t size)
 {
 	char	*res;

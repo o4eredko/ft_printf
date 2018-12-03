@@ -29,6 +29,5 @@ void	ft_va_putpointer(va_list ap, t_params *params)
 	while (*res_tmp++)
 		if (*res_tmp >= 'A' && *res_tmp <= 'F')
 			*res_tmp += 32;
-	ft_putstr(res, params);
-	free(res);
+	ft_format_str(res, params);
 }
