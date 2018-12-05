@@ -5,40 +5,39 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: yochered <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/25 18:03:45 by yochered          #+#    #+#             */
-/*   Updated: 2018/11/25 18:03:46 by yochered         ###   ########.fr       */
+/*   Created: 2018/12/04 18:25:19 by yochered          #+#    #+#             */
+/*   Updated: 2018/12/04 18:25:20 by yochered         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-unsigned long long ft_power(long long nb, int power)
+void	ft_round(char *str, int i)
 {
-	unsigned long long	res;
+	int flag;
 
-	res = 1;
-	if (power <= 0)
-		return (1);
-	while (power--)
-		res *= nb;
-	return (res);
-}
-
-void		ft_strrev(char *str, int len)
-{
-	char	c;
-	int 	i;
-
-	i = -1;
-	while (++i < --len)
+	flag = 0;
+	if (str[i] >= '5' && str[i - 1] != '.')
 	{
-		c = str[i];
-		str[i] = str[len];
-		str[len] = c;
+		str[i]++;
+		flag = 1;
+		str[i] = str[i] == ':' ? '0' : str[i];
+	}
+	while (i && str[i - 1] != '.' && str[i - 2] != '.')
+	{
+		if (str[i] >= '5' || flag)
+		{
+			str[i - 1]++;
+			flag = 1;
+		}
+		else
+			flag = 0;
+		str[i] = str[i] == ':' ? '0' : str[i];
+		i--;
 	}
 }
 
-int		ft_int_to_str(long long nbr, char *res, int precision)
+int		ft_int_to_str(intmax_t nbr, char *res, int precision)
 {
 	int i;
 
@@ -56,38 +55,47 @@ int		ft_int_to_str(long long nbr, char *res, int precision)
 
 void		ft_dtoa(long double nbr, char *res, int precision)
 {
-	long long 	i_part;
+	intmax_t 	i_part;
 	long double	f_part;
-	long long	i;
+	int			i;
 
-	i_part = (long long)nbr;
+	i_part = (intmax_t)nbr;
 	f_part = nbr - (long double)i_part;
 	i = ft_int_to_str(i_part, res, 1);
 	if (precision)
 	{
 		res[i] = '.';
-		f_part *= ft_power(10, precision);
-		if ((int)((f_part - (long long)f_part) * 10) >= 5)
-			f_part++;
-		ft_int_to_str((long long)f_part, &res[i + 1], precision);
+		while (precision--)
+		{
+			f_part *= 10;
+			if (!precision && (int)(f_part * 10) % 10 >= 5)
+			{
+				res[++i] = (int)f_part + 1 + 48;
+				res[i - 1] = res[i] == ':' ? res[i - 1] + 1 : res[i - 1];
+				res[i] = res[i] == ':' ? '0' : res[i];
+			}
+			else
+				res[++i] = (int)f_part + 48;
+			f_part -= (intmax_t)f_part;
+		}
+		ft_round(res, i);
 	}
 }
 
-void		ft_va_putfloat(va_list ap, t_params *params)
+int			ft_va_putfloat(va_list ap, t_params *params)
 {
 	long double	nbr;
 	char 		*res;
 
-	if (find_flag(params->flag, 'L'))
+	if (params->e_convert == L)
 		nbr = va_arg(ap, long double);
 	else
-		nbr = va_arg(ap, double);
-	res = ft_strnew((unsigned int)(count_ll_digits((long long)nbr, 10)
-			+ 1 + (params->precision ? params->precision : 6)));
+		nbr = va_arg(ap, double);	res = ft_strnew((count_signed_digits(nbr, 10)
+								   + 1 + (params->flag & precision ? params->precision : 6)));
 	if (nbr < 0)
 		*res++ = '-';
-	ft_dtoa(nbr < 0 ? -nbr : nbr, res, params->precision ? params->precision : 6);
+	ft_dtoa(nbr < 0 ? -nbr : nbr, res, params->flag & precision ? params->precision : 6);
 	if (nbr < 0)
 		res--;
-	ft_format_str(res, params);
+	return (ft_format_str(res, params));
 }

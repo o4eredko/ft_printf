@@ -13,8 +13,9 @@
 NAME = libftprintf.a
 FLAGS = -c -Wall -W -Werror
 SRCDIR = ./src/
-SRC = convert_to_str.c ft_printf.c function_array.c print_float.c print_int.c\
-	print_pointer.c print_str.c str_functions.c
+SRC = convert_to_str.c ft_printf.c function_array.c print_int.c\
+	print_pointer.c print_str.c str_functions.c allowed_symbols.c\
+	print_uint.c print_float.c
 OBJ = $(addprefix $(SRCDIR), $(SRC:.c=.o))
 
 all: $(NAME)

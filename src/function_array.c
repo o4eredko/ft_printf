@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-void	fill_function_arr(void (*f[10])(va_list, t_params*))
+void	fill_function_arr(int (*f[10])(va_list, t_params*))
 {
 	f[0] = ft_va_putchar;
 	f[1] = ft_va_putstr;
@@ -40,9 +40,9 @@ int		type_id(char c)
 		res = 3;
 	if (c == 'o')
 		res = 4;
-	if (c == 'X')
-		res = 5;
 	if (c == 'x')
+		res = 5;
+	if (c == 'X')
 		res = 6;
 	if (c == 'p')
 		res = 7;

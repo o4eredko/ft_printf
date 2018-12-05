@@ -26,82 +26,99 @@ void	ft_putstr(char *str)
 	}
 }
 
-char	*add_format(char *str, t_params *params)
+void	ft_putnstr(char *str, int n)
 {
-	char *res;
-
-	res = ft_strnew(ft_strlen(str) + params->type == 'o' ? 1 : 2);
-	if (params->type == 'o')
+	while (*str && n--)
 	{
-		ft_strcpy(res, "0");
-		ft_strcpy(res + 1, str);
+		ft_putchar(*str);
+		str++;
 	}
-	else if (params->type == 'x' || params->type == 'X')
-	{
-		ft_strcpy(res, params->type == 'x' ? "0x" : "0X");
-		ft_strcpy(res + 2, str);
-	}
-	free(str);
-	return (res);
 }
 
-void	print_padding(int size, t_params *params)
+void	print_padding(int size, char c)
 {
 	while (size-- > 0)
-	{
-		ft_putchar(find_flag(params->flag, '0')
-		&& !find_flag(params->flag, '-') ? '0' : ' ');
-		params->len++;
-	}
+		ft_putchar(c);
 }
 
-void	print_percent(t_params *params)
+int		print_percent(t_params *params)
 {
-	if (!find_flag(params->flag, '-') && params->width)
-		print_padding(params->width - 1, params);
+	int len;
+
+	len = 1;
+	if (params->flag & width)
+		len = params->width > len ? params->width : len;
+	if (params->flag & width && !(params->flag & minus))
+		print_padding(params->width - 1, params->flag & zero ? '0' : ' ');
 	ft_putchar('%');
-	params->len++;
-	if (find_flag(params->flag, '-') && params->width)
-		print_padding(params->width - 1, params);
+	if (params->flag & width && params->flag & minus)
+		print_padding(params->width - 1, ' ');
+	return (len);
 }
 
-void	ft_format_str(char *s, t_params *params)
+int		ft_format_str(char *s, t_params *params)
 {
-	size_t	len;
-	char	*str;
+	int len;
 
-	len = ft_strlen(s);
-	str = params->width - len > 0 ? ft_strnew((size_t)params->width - len) : NULL;
-	if (find_flag(params->flag, '#') || find_flag(params->flag, '0'))
-		s = add_format(s, params);
-	len = ft_strlen(s);
-	if (str && !find_flag(params->flag, '0'))
+	len = (int)ft_strlen(s);
+	if (params->flag & width)
+		len = params->width > len ? params->width : len;
+	if (params->flag & width && !(params->flag & minus) && (!(params->flag & zero) || params->flag & precision))
+		print_padding(params->width - (int)ft_strlen(s), ' ');
+	if (params->flag & width && !(params->flag & minus) && params->flag & zero && !(params->flag & precision))
 	{
-		ft_memset(str, ' ', (size_t)params->width - len);
-		s = find_flag(params->flag, '-') ? ft_strjoin(s, str) : ft_strjoin(str, s);
+		if (params->flag & hash || *s == '+' || *s == '-' || *s == ' ')
+		{
+			ft_putnstr(s, *(s + 1) == 'x' || *(s + 1) == 'X' ? 2 : 1);
+			params->width -= *(s + 1) == 'x' || *(s + 1) == 'X' ? 2 : 1;
+			s += *(s + 1) == 'x' || *(s + 1) == 'X' ? 2 : 1;
+		}
+		print_padding(params->width - (int)ft_strlen(s), '0');
 	}
 	ft_putstr(s);
-	params->len = (int)ft_strlen(s);
-	free(s);
+	if (params->flag & width && params->flag & minus)
+		print_padding(params->width - (int)ft_strlen(s), ' ');
+	return (len);
 }
 
-void	ft_va_putchar(va_list ap, t_params *params)
+int		ft_va_putchar(va_list ap, t_params *params)
 {
-	char c;
+	int 	len;
+	char	c;
 
 	c = (char)va_arg(ap, int);
-	if (!find_flag(params->flag, '-') && params->width)
-		print_padding(params->width - 1, params);
+	len = 1;
+	if (params->flag & width)
+		len = params->width > len ? params->width : len;
+	if (params->flag & width && !(params->flag & minus))
+		print_padding(params->width - 1, params->flag & zero ? '0' : ' ');
 	ft_putchar(c);
-	params->len++;
-	if (find_flag(params->flag, '-') && params->width)
-		print_padding(params->width - 1, params);
+	if (params->flag & width && params->flag & minus)
+		print_padding(params->width - 1, ' ');
+	return (len);
 }
 
-void	ft_va_putstr(va_list ap, t_params *params)
+int		ft_va_putstr(va_list ap, t_params *params)
 {
 	char 	*s;
 
 	s = va_arg(ap, char*);
-	ft_format_str(s, params);
+	if (!s)
+	{
+		s = ft_strnew(params->flag & precision ? params->precision : 6);
+		if (params->flag & width && params->flag & zero && params->flag & precision)
+		{
+			ft_memset(s, '0', (size_t)params->precision);
+			ft_strcpy(s + params->precision - 1, "(null)");
+		}
+		else
+			ft_strcpy(s, "(null)");
+		if (!(params->flag & width))
+			s[params->flag & precision ? params->precision : 6] = '\0';
+		else
+			s[params->width > 6 ? params->width - 1 : 6] = '\0';
+	}
+	else if (params->flag & precision && params->precision < (int)ft_strlen(s))
+		s = ft_strsub(s, 0, (size_t)params->precision);
+	return (ft_format_str(s, params));
 }

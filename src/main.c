@@ -15,7 +15,7 @@
 
 int main(void)
 {
-	printf("|%#15x|\n", 42);
-	ft_printf("|%#15x|\n", 42);
+	printf("{%*s}\n", 5, 0);
+	ft_printf("{%*s}\n", 5, 0);
 	return (0);
 }

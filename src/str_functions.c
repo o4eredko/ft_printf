@@ -12,6 +12,35 @@
 
 #include "ft_printf.h"
 
+intmax_t ft_power(intmax_t nb, int power)
+{
+	intmax_t	res;
+
+	res = 1;
+	if (power <= 0)
+		return (1);
+	while (power--)
+		res *= nb;
+	return (res);
+}
+
+char	*ft_strsub(char const *s, unsigned int start, size_t len)
+{
+	char	*fresh_str;
+	char	*str;
+	size_t	i;
+
+	i = 0;
+	fresh_str = (char *)malloc((len + 1) * sizeof(char));
+	if (!fresh_str || !s)
+		return (NULL);
+	str = (char *)s;
+	while (str[start] != '\0' && i < len)
+		fresh_str[i++] = str[start++];
+	fresh_str[i] = '\0';
+	return (fresh_str);
+}
+
 size_t	ft_strlen(const char *string)
 {
 	size_t	len;
@@ -20,6 +49,46 @@ size_t	ft_strlen(const char *string)
 	while (string[len] != '\0')
 		len++;
 	return (len);
+}
+
+void		str_toupper(char *str)
+{
+	while (*str)
+	{
+		if (*str >= 'a' && *str <= 'z')
+			*str -= 32;
+		str++;
+	}
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	char *str;
+
+	str = (char *)s;
+	if ((char)c == '\0')
+		return (str + ft_strlen(str));
+	while (*str)
+	{
+		if (*str == (char)c)
+			return (str);
+		str++;
+	}
+	return (NULL);
+}
+
+void		ft_strrev(char *str, int len)
+{
+	char	c;
+	int 	i;
+
+	i = -1;
+	while (++i < --len)
+	{
+		c = str[i];
+		str[i] = str[len];
+		str[len] = c;
+	}
 }
 
 void	*ft_memset(void *b, int c, size_t len)
@@ -78,6 +147,25 @@ char	*ft_strnew(size_t size)
 		res[i++] = '\0';
 	res[i] = '\0';
 	return (res);
+}
+
+int	ft_strnequ(char const *s1, char const *s2, size_t n)
+{
+	size_t i;
+
+	i = 0;
+	if (!s1 || !s2 || !n)
+		return (1);
+	while (n > 0)
+	{
+		if (!s1[i] && !s2[i])
+			return (1);
+		if (s1[i] != s2[i])
+			return (0);
+		n--;
+		i++;
+	}
+	return (1);
 }
 
 char	*ft_strcpy(char *dst, const char *src)
