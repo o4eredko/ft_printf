@@ -56,5 +56,9 @@ int 	ft_va_putnbr(va_list ap, t_params *params)
 		*str_tmp++ = '+';
 	if (!(!nbr && (params->flag & precision && !params->precision)))
 		int_to_str(str_tmp, nbr, 10, params);
+	if (params->flag & hash)
+		params->flag = params->flag & ~(1 << (5 - 1));
+	if (params->flag & zero && params->flag & precision)
+		params->flag = params->flag & ~(1 << (3 - 1));
 	return (ft_format_str(str, params));
 }

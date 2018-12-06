@@ -68,17 +68,13 @@ void		ft_dtoa(long double nbr, char *res, int precision)
 		while (precision--)
 		{
 			f_part *= 10;
-			if (!precision && (int)(f_part * 10) % 10 >= 5)
-			{
-				res[++i] = (int)f_part + 1 + 48;
-				res[i - 1] = res[i] == ':' ? res[i - 1] + 1 : res[i - 1];
-				res[i] = res[i] == ':' ? '0' : res[i];
-			}
-			else
-				res[++i] = (int)f_part + 48;
+			res[++i] = (int)f_part + 48;
 			f_part -= (intmax_t)f_part;
+//			if (!precision)
+//				res[++i] = (int)(f_part * 10) % 10 + 48;
 		}
-		ft_round(res, i);
+//		ft_round(res, i);
+//		res[i] = '\0';
 	}
 }
 
@@ -90,8 +86,9 @@ int			ft_va_putfloat(va_list ap, t_params *params)
 	if (params->e_convert == L)
 		nbr = va_arg(ap, long double);
 	else
-		nbr = va_arg(ap, double);	res = ft_strnew((count_signed_digits(nbr, 10)
-								   + 1 + (params->flag & precision ? params->precision : 6)));
+		nbr = va_arg(ap, double);
+	res = ft_strnew(((size_t)count_signed_digits((intmax_t)nbr, 10)
+			+ 1 + (params->flag & precision ? params->precision : 6)));
 	if (nbr < 0)
 		*res++ = '-';
 	ft_dtoa(nbr < 0 ? -nbr : nbr, res, params->flag & precision ? params->precision : 6);

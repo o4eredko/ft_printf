@@ -63,9 +63,9 @@ int		ft_format_str(char *s, t_params *params)
 	len = (int)ft_strlen(s);
 	if (params->flag & width)
 		len = params->width > len ? params->width : len;
-	if (params->flag & width && !(params->flag & minus) && (!(params->flag & zero) || params->flag & precision))
+	if (params->flag & width && !(params->flag & minus) && !(params->flag & zero))
 		print_padding(params->width - (int)ft_strlen(s), ' ');
-	if (params->flag & width && !(params->flag & minus) && params->flag & zero && !(params->flag & precision))
+	if (params->flag & width && !(params->flag & minus) && params->flag & zero)
 	{
 		if (params->flag & hash || *s == '+' || *s == '-' || *s == ' ')
 		{
@@ -105,20 +105,12 @@ int		ft_va_putstr(va_list ap, t_params *params)
 	s = va_arg(ap, char*);
 	if (!s)
 	{
-		s = ft_strnew(params->flag & precision ? params->precision : 6);
-		if (params->flag & width && params->flag & zero && params->flag & precision)
-		{
-			ft_memset(s, '0', (size_t)params->precision);
-			ft_strcpy(s + params->precision - 1, "(null)");
-		}
-		else
-			ft_strcpy(s, "(null)");
-		if (!(params->flag & width))
-			s[params->flag & precision ? params->precision : 6] = '\0';
-		else
-			s[params->width > 6 ? params->width - 1 : 6] = '\0';
+		s = ft_strnew(6);
+		ft_strcpy(s, "(null)");
 	}
-	else if (params->flag & precision && params->precision < (int)ft_strlen(s))
+	if (params->flag & precision && params->precision < (int)ft_strlen(s))
 		s = ft_strsub(s, 0, (size_t)params->precision);
+	if (params->flag & hash)
+		params->flag = params->flag & ~(1 << (5 - 1));
 	return (ft_format_str(s, params));
 }

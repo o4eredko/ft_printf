@@ -15,7 +15,7 @@
 
 int main(void)
 {
-	printf("{%*s}\n", 5, 0);
-	ft_printf("{%*s}\n", 5, 0);
+	printf("%d\n", 12);
+	ft_printf("%'d\n", 12);
 	return (0);
 }
