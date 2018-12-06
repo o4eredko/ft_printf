@@ -133,7 +133,7 @@ int			handle_expression(va_list ap, const char **format)
 	if (handle_length((char**)format, &params) == -1)
 		return (0);
 	if ((index = type_id(**format)) == -1 && **format != '%')
-		return (0);
+		exit(0);
 	ret += **format == '%' ? print_percent(&params) : f[index](ap, &params);
 	(*format)++;
 	return (ret);

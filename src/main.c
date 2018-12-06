@@ -15,7 +15,7 @@
 
 int main(void)
 {
-	printf("%d\n", 12);
-	ft_printf("%'d\n", 12);
+	printf("%b\n", 12);
+	ft_printf("%b\n", 12);
 	return (0);
 }
