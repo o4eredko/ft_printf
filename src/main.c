@@ -15,7 +15,10 @@
 
 int main(void)
 {
-	printf("%b\n", 12);
-	ft_printf("%b\n", 12);
+	double nbr;
+
+	nbr = -127.42;
+	printf("%.20f\n", nbr);
+	ft_printf("%.20f\n", nbr);
 	return (0);
 }

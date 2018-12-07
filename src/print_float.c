@@ -12,30 +12,50 @@
 
 #include "ft_printf.h"
 
-void	ft_round(char *str, int i)
-{
-	int flag;
+//void	round_fractial_part(char *str, int precision, int digits)
+//{
+//	int flag;
+//
+//	flag = 0;
+//	while (digits--)
+//	{
+//		if (str[digits] >= '5' || flag)
+//			str[digits - 1]++;
+//		else if (digits <= precision)
+//			break ;
+//		flag = 0;
+//		if (str[digits- 1] == ':')
+//		{
+//			str[digits - 1] = '0';
+//			flag = 1;
+//		}
+//	}
+//}
+//
+//void	fill_fractial_part(long double nbr, char *res)
+//{
+//	while (nbr)
+//	{
+//		nbr *= 10;
+//		*res++ = (char)(nbr + 48);
+//		nbr -= (int)nbr;
+//	}
+//	*res = '\0';
+//}
 
-	flag = 0;
-	if (str[i] >= '5' && str[i - 1] != '.')
-	{
-		str[i]++;
-		flag = 1;
-		str[i] = str[i] == ':' ? '0' : str[i];
-	}
-	while (i && str[i - 1] != '.' && str[i - 2] != '.')
-	{
-		if (str[i] >= '5' || flag)
-		{
-			str[i - 1]++;
-			flag = 1;
-		}
-		else
-			flag = 0;
-		str[i] = str[i] == ':' ? '0' : str[i];
-		i--;
-	}
-}
+//int 	count_fractial_digits(long double nbr)
+//{
+//	int counter;
+//
+//	counter = 0;
+//	while (nbr)
+//	{
+//		nbr *= 10;
+//		nbr -= (int)nbr;
+//		counter++;
+//	}
+//	return (counter);
+//}
 
 int		ft_int_to_str(intmax_t nbr, char *res, int precision)
 {
@@ -56,25 +76,23 @@ int		ft_int_to_str(intmax_t nbr, char *res, int precision)
 void		ft_dtoa(long double nbr, char *res, int precision)
 {
 	intmax_t 	i_part;
-	long double	f_part;
 	int			i;
+	int 		k;
 
+	k = -1;
 	i_part = (intmax_t)nbr;
-	f_part = nbr - (long double)i_part;
+	nbr -= (intmax_t)nbr;
 	i = ft_int_to_str(i_part, res, 1);
+	nbr += 0.5 / ft_power(10, precision >= 14 ? 14 : precision);
 	if (precision)
 	{
-		res[i] = '.';
-		while (precision--)
+		res[i++] = '.';
+		while (++k < precision)
 		{
-			f_part *= 10;
-			res[++i] = (int)f_part + 48;
-			f_part -= (intmax_t)f_part;
-//			if (!precision)
-//				res[++i] = (int)(f_part * 10) % 10 + 48;
+			nbr *= 10;
+			res[i++] = (k >= 14) ? '0' : (char)((int)nbr + 48);
+			nbr -= (int)nbr;
 		}
-//		ft_round(res, i);
-//		res[i] = '\0';
 	}
 }
 
