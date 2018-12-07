@@ -75,25 +75,29 @@ int		ft_int_to_str(intmax_t nbr, char *res, int precision)
 
 void		ft_dtoa(long double nbr, char *res, int precision)
 {
-	intmax_t 	i_part;
 	int			i;
 	int 		k;
+	int 		i_len;
 
 	k = -1;
-	i_part = (intmax_t)nbr;
+	i = ft_int_to_str((intmax_t)nbr, res, 1);
+	i_len = i;
 	nbr -= (intmax_t)nbr;
-	i = ft_int_to_str(i_part, res, 1);
-	nbr += 0.5 / ft_power(10, precision >= 14 ? 14 : precision);
+	while (res[++k] == '0')
+		i_len--;
+	k = -1;
+	nbr += 0.5 / ft_power(10, precision >= 17 - i_len ? 17 - i_len : precision);
 	if (precision)
 	{
 		res[i++] = '.';
 		while (++k < precision)
 		{
 			nbr *= 10;
-			res[i++] = (k >= 14) ? '0' : (char)((int)nbr + 48);
+			res[i++] = (char)((k >= 17 - i_len) ? '0' : ((int)nbr + 48));
 			nbr -= (int)nbr;
 		}
 	}
+	res[i] = '\0';
 }
 
 int			ft_va_putfloat(va_list ap, t_params *params)
@@ -107,10 +111,15 @@ int			ft_va_putfloat(va_list ap, t_params *params)
 		nbr = va_arg(ap, double);
 	res = ft_strnew(((size_t)count_signed_digits((intmax_t)nbr, 10)
 			+ 1 + (params->flag & precision ? params->precision : 6)));
-	if (nbr < 0)
-		*res++ = '-';
+	if (nbr < 0 || params->flag & plus || params->flag & space)
+	{
+		if (nbr < 0)
+			*res++ = '-';
+		else
+			*res++ = params->flag & space && !(params->flag & plus) ? ' ' : '+';
+	}
 	ft_dtoa(nbr < 0 ? -nbr : nbr, res, params->flag & precision ? params->precision : 6);
-	if (nbr < 0)
+	if (nbr < 0 || params->flag & plus || params->flag & space)
 		res--;
 	return (ft_format_str(res, params));
 }

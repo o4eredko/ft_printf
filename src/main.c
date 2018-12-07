@@ -17,8 +17,8 @@ int main(void)
 {
 	double nbr;
 
-	nbr = -127.42;
-	printf("%.20f\n", nbr);
-	ft_printf("%.20f\n", nbr);
+	nbr = 100000.41999999525535354535552555452251325532531325321312551325;
+	printf("%.50f\n", nbr);
+	ft_printf("%.50f\n", nbr);
 	return (0);
 }
