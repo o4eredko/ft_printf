@@ -69,9 +69,9 @@ int		ft_format_str(char *s, t_params *params)
 	{
 		if (params->flag & hash || *s == '+' || *s == '-' || *s == ' ')
 		{
-			ft_putnstr(s, *(s + 1) == 'x' || *(s + 1) == 'X' ? 2 : 1);
-			params->width -= *(s + 1) == 'x' || *(s + 1) == 'X' ? 2 : 1;
-			s += *(s + 1) == 'x' || *(s + 1) == 'X' ? 2 : 1;
+			ft_putnstr(s, *(s + 1) == 'x' || *(s + 1) == 'X' || *(s + 1) == 'b' ? 2 : 1);
+			params->width -= *(s + 1) == 'x' || *(s + 1) == 'X' || *(s + 1) == 'b' ? 2 : 1;
+			s += *(s + 1) == 'x' || *(s + 1) == 'X' || *(s + 1) == 'b' ? 2 : 1;
 		}
 		print_padding(params->width - (int)ft_strlen(s), '0');
 	}

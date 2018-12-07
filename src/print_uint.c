@@ -97,7 +97,7 @@ int	ft_va_puthex(va_list ap, t_params *params)
 		uint_to_str(str, nbr, 16, params);
 	if (params->flag & hash && nbr > 0)
 	{
-		str = ft_strnew(1);
+		str = ft_strnew(2);
 		ft_strcpy(str, "0x");
 		str = ft_strjoin(str, str_tmp);
 	}
@@ -124,7 +124,7 @@ int	ft_va_l_puthex(va_list ap, t_params *params)
 	str_toupper(str);
 	if (params->flag & hash && nbr > 0)
 	{
-		str = ft_strnew(1);
+		str = ft_strnew(2);
 		ft_strcpy(str, "0X");
 		str = ft_strjoin(str, str_tmp);
 	}

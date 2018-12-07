@@ -15,10 +15,9 @@
 
 int main(void)
 {
-	double nbr;
+	int nbr;
 
-	nbr = 100000.41999999525535354535552555452251325532531325321312551325;
-	printf("%.50f\n", nbr);
-	ft_printf("%.50f\n", nbr);
+	nbr = 10;
+	ft_printf("%10b\n", nbr);
 	return (0);
 }

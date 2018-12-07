@@ -55,6 +55,7 @@ int					ft_va_puthex(va_list ap, t_params *params);
 int					ft_va_l_puthex(va_list ap, t_params *params);
 int					ft_va_putpointer(va_list ap, t_params *params);
 int					ft_va_putfloat(va_list ap, t_params *params);
+int					ft_va_putbinary(va_list ap, t_params *params);
 
 void				ft_putchar(char c);
 void				ft_putstr(char *s);
@@ -90,6 +91,7 @@ void				ft_strrev(char *str, int len);
 void				str_toupper(char *str);
 int					ft_strnequ(char const *s1, char const *s2, size_t n);
 char				*ft_strsub(char const *s, unsigned int start, size_t len);
+uintmax_t			convert_unsigned_arg(va_list ap, t_params *params);
 
 /*Function array*/
 void				fill_function_arr(int (*f[10])(va_list, t_params*));
