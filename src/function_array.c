@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-void	fill_function_arr(int (*f[10])(va_list, t_params*))
+void	fill_function_arr(int (*f[11])(va_list, t_params*))
 {
 	f[0] = ft_va_putchar;
 	f[1] = ft_va_putstr;
@@ -24,6 +24,7 @@ void	fill_function_arr(int (*f[10])(va_list, t_params*))
 	f[7] = ft_va_putpointer;
 	f[8] = ft_va_putfloat;
 	f[9] = ft_va_putbinary;
+	f[10] = ft_va_putnonprint;
 }
 
 int		type_id(char c)
@@ -51,5 +52,7 @@ int		type_id(char c)
 		res = 8;
 	if (c == 'b')
 		res = 9;
+	if (c == 'k')
+		res = 10;
 	return (res);
 }

@@ -168,6 +168,23 @@ int	ft_strnequ(char const *s1, char const *s2, size_t n)
 	return (1);
 }
 
+char	*ft_strdup(const char *s1)
+{
+	char	*dest;
+	char	*dest_tmp;
+	int		len;
+
+	len = (int)ft_strlen(s1);
+	dest = (char *)malloc((len + 1) * sizeof(char));
+	if (!dest)
+		return (NULL);
+	dest_tmp = dest;
+	while (*s1)
+		*dest++ = *s1++;
+	*dest = '\0';
+	return (dest_tmp);
+}
+
 char	*ft_strcpy(char *dst, const char *src)
 {
 	char *dst_tmp;

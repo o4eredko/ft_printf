@@ -117,7 +117,7 @@ int			handle_expression(va_list ap, const char **format)
 	t_params	params;
 	int 		ret;
 	int 		index;
-	int			(*f[10])(va_list, t_params*);
+	int			(*f[11])(va_list, t_params*);
 
 	ret = 0;
 	fill_function_arr(f);
@@ -133,7 +133,7 @@ int			handle_expression(va_list ap, const char **format)
 	if (handle_length((char**)format, &params) == -1)
 		return (0);
 	if ((index = type_id(**format)) == -1 && **format != '%')
-		exit(0);
+		return (0);
 	ret += **format == '%' ? print_percent(&params) : f[index](ap, &params);
 	(*format)++;
 	return (ret);

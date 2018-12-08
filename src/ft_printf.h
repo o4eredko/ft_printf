@@ -56,6 +56,7 @@ int					ft_va_l_puthex(va_list ap, t_params *params);
 int					ft_va_putpointer(va_list ap, t_params *params);
 int					ft_va_putfloat(va_list ap, t_params *params);
 int					ft_va_putbinary(va_list ap, t_params *params);
+int					ft_va_putnonprint(va_list ap, t_params *params);
 
 void				ft_putchar(char c);
 void				ft_putstr(char *s);
@@ -73,6 +74,7 @@ int			 		count_signed_digits(intmax_t value, int base);
 void 				uint_to_str(char *res, uintmax_t nbr, int base, t_params *params);
 void 				int_to_str(char *res, intmax_t nbr, int base, t_params *params);
 
+char				*ft_strdup(const char *s1);
 char				*ft_itoa_base(intmax_t value, int base);
 char				*ft_uitoa_base(unsigned int value, int base);
 char				*ft_ll_itoa_base(long long value, int base);
