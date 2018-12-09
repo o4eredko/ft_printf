@@ -117,7 +117,7 @@ int			handle_expression(va_list ap, const char **format)
 	t_params	params;
 	int 		ret;
 	int 		index;
-	int			(*f[11])(va_list, t_params*);
+	int			(*f[12])(va_list, t_params*);
 
 	ret = 0;
 	fill_function_arr(f);

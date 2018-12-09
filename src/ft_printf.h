@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <inttypes.h>
+# include <time.h>
 # define FLAGS "+-0 #"
 
 typedef struct		s_params
@@ -57,6 +58,7 @@ int					ft_va_putpointer(va_list ap, t_params *params);
 int					ft_va_putfloat(va_list ap, t_params *params);
 int					ft_va_putbinary(va_list ap, t_params *params);
 int					ft_va_putnonprint(va_list ap, t_params *params);
+int				 	ft_va_puttime(va_list ap, t_params *params);
 
 void				ft_putchar(char c);
 void				ft_putstr(char *s);

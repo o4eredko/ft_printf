@@ -12,12 +12,10 @@
 
 #include "ft_printf.h"
 #include <stdio.h>
+#include <time.h>
 
 int main(void)
 {
-	int nbr;
-
-	nbr = 10;
-	ft_printf("%10b\n", nbr);
+	ft_printf("%k\n", "%d.%m.%y: %H:%M:%S\n");
 	return (0);
 }

@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-void	fill_function_arr(int (*f[11])(va_list, t_params*))
+void	fill_function_arr(int (*f[12])(va_list, t_params*))
 {
 	f[0] = ft_va_putchar;
 	f[1] = ft_va_putstr;
@@ -25,34 +25,21 @@ void	fill_function_arr(int (*f[11])(va_list, t_params*))
 	f[8] = ft_va_putfloat;
 	f[9] = ft_va_putbinary;
 	f[10] = ft_va_putnonprint;
+	f[11] = ft_va_puttime;
 }
 
 int		type_id(char c)
 {
-	int res;
+	char	*str;
+	int 	i;
 
-	res = -1;
-	if (c == 'c')
-		res = 0;
-	if (c == 's')
-		res = 1;
-	if (c == 'd' || c == 'i')
-		res = 2;
-	if (c == 'u')
-		res = 3;
-	if (c == 'o')
-		res = 4;
-	if (c == 'x')
-		res = 5;
-	if (c == 'X')
-		res = 6;
-	if (c == 'p')
-		res = 7;
-	if (c == 'f')
-		res = 8;
-	if (c == 'b')
-		res = 9;
-	if (c == 'k')
-		res = 10;
-	return (res);
+	i = 0;
+	str = "csduoxXpfbrk";
+	while (str[i])
+	{
+		if (c == str[i] || (c == 'i' && str[i] == 'd'))
+			break ;
+		i++;
+	}
+	return (i);
 }

@@ -12,6 +12,16 @@
 
 #include "ft_printf.h"
 
+double		ft_pow(double nbr, int pow)
+{
+	double res;
+
+	res = 1;
+	while (pow--)
+		res *= nbr;
+	return (res);
+}
+
 int		ft_int_to_str(intmax_t nbr, char *res, int precision)
 {
 	int i;
@@ -37,7 +47,7 @@ void		ft_dtoa(long double nbr, char *res, int precision)
 	i = ft_int_to_str((intmax_t)nbr, res, 1);
 	nbr -= (intmax_t)nbr;
 	k = -1;
-	nbr += 0.5 / ft_power(10, precision);
+	nbr += 0.5 / ft_pow(10, precision);
 	if (precision)
 	{
 		res[i++] = '.';

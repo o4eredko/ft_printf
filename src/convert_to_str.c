@@ -70,14 +70,14 @@ void 		int_to_str(char *res, intmax_t nbr, int base, t_params *params)
 	nbr_tmp = nbr;
 	base_digits = "0123456789abcdef";
 	i = 0;
-	if (nbr == 0 && !(params->flag & precision))
+	if (nbr == 0 && params && !(params->flag & precision))
 		res[i++] = '0';
 	while (nbr)
 	{
 		res[i++] = base_digits[(nbr < 0 ? -(nbr % base) : nbr % base)];
 		nbr /= base;
 	}
-	while (i < params->precision && params->flag & precision)
+	while (params && i < params->precision && params->flag & precision)
 		res[i++] = '0';
 	if (nbr_tmp < 0)
 		res[i++] = '-';

@@ -22,7 +22,7 @@ int		ft_va_putbinary(va_list ap, t_params *params)
 	nbr = convert_unsigned_arg(ap, params);
 	len = count_unsigned_digits(nbr, 2);
 	if (params->flag & precision)
-		len = (int)len < params->precision ? params->precision : len;
+		len = len < params->precision ? params->precision : len;
 	res = ft_strnew((size_t)len);
 	if (!(!nbr && (params->flag & precision && !params->precision)))
 		uint_to_str(res, nbr, 2, params);
@@ -64,6 +64,7 @@ char 	*get_str_22_to_32(char c)
 		return ("[sp]");
 	else if (c == 127)
 		return ("[del]");
+	return (NULL);
 }
 
 char 	*get_str_11_to_21(char c)
@@ -91,7 +92,7 @@ char 	*get_str_11_to_21(char c)
 	else if (c == 21)
 		return ("[nak]");
 	else
-		get_str_22_to_32(c);
+		return (get_str_22_to_32(c));
 }
 
 char	*get_str(char c)
@@ -119,7 +120,7 @@ char	*get_str(char c)
 	else if (c == 10)
 		return ("[nl]");
 	else
-		get_str_11_to_21(c);
+		return (get_str_11_to_21(c));
 }
 
 int		ft_va_putnonprint(va_list ap, t_params *params)
@@ -136,5 +137,57 @@ int		ft_va_putnonprint(va_list ap, t_params *params)
 		res = ft_strjoin(res, ft_strdup(get_str(*s)));
 		s++;
 	}
+	return (ft_format_str(res, params));
+}
+
+char 	*get_time(char *str, struct tm *tm_info)
+{
+	char *res;
+
+	str++;
+	res = ft_strnew(*str == 'y' ? 4 : 2);
+	if (*str == 'd')
+		int_to_str(res, tm_info->tm_mday, 10, NULL);
+	if (*str == 'm')
+		int_to_str(res, tm_info->tm_mon, 10, NULL);
+	if (*str == 'y')
+		int_to_str(res, 1900 + tm_info->tm_year, 10, NULL);
+	if (*str == 'H')
+		int_to_str(res, tm_info->tm_hour, 10, NULL);
+	if (*str == 'M')
+		int_to_str(res, tm_info->tm_min, 10, NULL);
+	if (*str == 'S')
+		int_to_str(res, tm_info->tm_sec, 10, NULL);
+	return (res);
+}
+
+int 	ft_va_puttime(va_list ap, t_params *params)
+{
+	time_t		local;
+	struct tm	*tm_info;
+	char 		*str;
+	char 		*res;
+	int 		i;
+
+	i = 0;
+	time(&local);
+	tm_info = localtime(&local);
+	str = va_arg(ap, char*);
+	res = ft_strnew(ft_strlen(str) * 2);
+	while (*str)
+	{
+		if (*str == '%')
+		{
+			ft_strcpy(&res[i], get_time(str, tm_info));
+			while (res[i + 1])
+				i++;
+			str++;
+		}
+		else
+			res[i] = *str;
+		i++;
+		str++;
+	}
+	res[i] = '\0';
 	return (ft_format_str(res, params));
 }
