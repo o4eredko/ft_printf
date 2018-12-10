@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-int 		count_unsigned_digits(uintmax_t value, int base)
+int			count_unsigned_digits(uintmax_t value, int base)
 {
 	int digits;
 
@@ -27,7 +27,7 @@ int 		count_unsigned_digits(uintmax_t value, int base)
 	return (digits);
 }
 
-int 		count_signed_digits(intmax_t value, int base)
+int			count_signed_digits(intmax_t value, int base)
 {
 	int digits;
 
@@ -42,9 +42,9 @@ int 		count_signed_digits(intmax_t value, int base)
 	return (digits);
 }
 
-void 		uint_to_str(char *res, uintmax_t nbr, int base, t_params *params)
+void		uint_to_str(char *res, uintmax_t nbr, int base, t_params *params)
 {
-	char 	*base_digits;
+	char	*base_digits;
 	int		i;
 
 	base_digits = "0123456789abcdef";
@@ -61,9 +61,9 @@ void 		uint_to_str(char *res, uintmax_t nbr, int base, t_params *params)
 	ft_strrev(res, i);
 }
 
-void 		int_to_str(char *res, intmax_t nbr, int base, t_params *params)
+void		int_to_str(char *res, intmax_t nbr, int base, t_params *params)
 {
-	char 		*base_digits;
+	char		*base_digits;
 	int			i;
 	intmax_t	nbr_tmp;
 
@@ -82,64 +82,4 @@ void 		int_to_str(char *res, intmax_t nbr, int base, t_params *params)
 	if (nbr_tmp < 0)
 		res[i++] = '-';
 	ft_strrev(res, i);
-}
-
-int 		count_u_digits(unsigned int value, int base)
-{
-	int digits;
-
-	digits = 0;
-	if (value == 0)
-		digits++;
-	while (value != 0)
-	{
-		digits++;
-		value /= base;
-	}
-	return (digits);
-}
-
-char		*ft_itoa_base(intmax_t value, int base)
-{
-	char	*res;
-	char	*base_digits;
-	int		digits;
-
-	base_digits = "0123456789ABCDEF";
-	digits = count_signed_digits(value, base);
-	if (!(res = (char *)malloc((digits + 1) * sizeof(char))))
-		return (NULL);
-	if (value < 0 && base == 10)
-		res[0] = '-';
-	if (value == 0)
-		res[0] = '0';
-	res[digits] = '\0';
-	while (value && digits-- > 0)
-	{
-		res[digits] = value < 0 ? base_digits[-(value % base)] :
-					  base_digits[(value % base)];
-		value /= base;
-	}
-	return (res);
-}
-
-char		*ft_uitoa_base(unsigned int value, int base)
-{
-	char	*res;
-	char	*base_digits;
-	int		digits;
-
-	base_digits = "0123456789ABCDEF";
-	digits = count_unsigned_digits(value, base);
-	if (!(res = (char *)malloc((digits + 1) * sizeof(char))))
-		return (NULL);
-	if (value == 0)
-		res[0] = '0';
-	res[digits] = '\0';
-	while (value && digits-- > 0)
-	{
-		res[digits] = base_digits[(value % base)];
-		value /= base;
-	}
-	return (res);
 }

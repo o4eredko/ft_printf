@@ -33,7 +33,7 @@ int			handle_flags(char **format, t_params *params)
 	return (1);
 }
 
-int 		handle_width(char **format, t_params *params, va_list ap)
+int			handle_width(char **format, t_params *params, va_list ap)
 {
 	if (!allowed_symbols(*format))
 		return (-1);
@@ -88,7 +88,7 @@ int			handle_precision(char **format, t_params *params, va_list ap)
 	return (1);
 }
 
-int 		handle_length(char **format, t_params *params)
+int			handle_length(char **format, t_params *params)
 {
 	params->e_convert = none;
 	if (!allowed_symbols(*format))
@@ -115,8 +115,8 @@ int 		handle_length(char **format, t_params *params)
 int			handle_expression(va_list ap, const char **format)
 {
 	t_params	params;
-	int 		ret;
-	int 		index;
+	int			ret;
+	int			index;
 	int			(*f[12])(va_list, t_params*);
 
 	ret = 0;
@@ -139,10 +139,10 @@ int			handle_expression(va_list ap, const char **format)
 	return (ret);
 }
 
-int 		ft_printf(const char *format, ...)
+int			ft_printf(const char *format, ...)
 {
 	va_list		ap;
-	int 		ret;
+	int			ret;
 
 	ret = 0;
 	va_start(ap, format);

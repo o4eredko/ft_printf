@@ -12,78 +12,46 @@
 
 #include "ft_printf.h"
 
-void	ft_putchar(char c)
-{
-	write(1, &c, 1);
-}
-
-void	ft_putstr(char *str)
-{
-	while (*str)
-	{
-		ft_putchar(*str);
-		str++;
-	}
-}
-
-void	ft_putnstr(char *str, int n)
-{
-	while (*str && n--)
-	{
-		ft_putchar(*str);
-		str++;
-	}
-}
-
-void	print_padding(int size, char c)
-{
-	while (size-- > 0)
-		ft_putchar(c);
-}
-
-int		print_percent(t_params *params)
+void	skip_flag_symbols(t_params *params, char **s)
 {
 	int len;
 
 	len = 1;
-	if (params->flag & width)
-		len = params->width > len ? params->width : len;
-	if (params->flag & width && !(params->flag & minus))
-		print_padding(params->width - 1, params->flag & zero ? '0' : ' ');
-	ft_putchar('%');
-	if (params->flag & width && params->flag & minus)
-		print_padding(params->width - 1, ' ');
-	return (len);
+	if (*(*s + 1) == 'x' || *(*s + 1) == 'X' || *(*s + 1) == 'b')
+		len = 2;
+	ft_putnstr(*s, len);
+	params->width -= len;
+	*s += len;
 }
 
 int		ft_format_str(char *s, t_params *params)
 {
-	int len;
+	int		len;
+	char	*str_tmp;
 
 	len = (int)ft_strlen(s);
-	if (params->flag & width)
-		len = params->width > len ? params->width : len;
-	if (params->flag & width && !(params->flag & minus) && !(params->flag & zero))
+	len = params->flag & width && params->width > len ? params->width : len;
+	str_tmp = s;
+	if (params->flag & width && !(params->flag & minus)
+		&& !(params->flag & zero))
 		print_padding(params->width - (int)ft_strlen(s), ' ');
 	if (params->flag & width && !(params->flag & minus) && params->flag & zero)
 	{
-		if (params->flag & hash || *s == '+' || *s == '-' || *s == ' ')
-		{
-			ft_putnstr(s, *(s + 1) == 'x' || *(s + 1) == 'X' || *(s + 1) == 'b' ? 2 : 1);
-			params->width -= *(s + 1) == 'x' || *(s + 1) == 'X' || *(s + 1) == 'b' ? 2 : 1;
-			s += *(s + 1) == 'x' || *(s + 1) == 'X' || *(s + 1) == 'b' ? 2 : 1;
-		}
+		if (params->flag & hash || *s == '+' || *s == '-' || *s == ' '
+		|| (*s == '0' && *(s + 1) == 'x'))
+			skip_flag_symbols(params, &s);
 		print_padding(params->width - (int)ft_strlen(s), '0');
 	}
 	ft_putstr(s);
 	if (params->flag & width && params->flag & minus)
 		print_padding(params->width - (int)ft_strlen(s), ' ');
+	free(str_tmp);
 	return (len);
 }
 
 int		ft_va_putchar(va_list ap, t_params *params)
 {
-	int 	len;
+	int		len;
 	char	c;
 
 	c = (char)va_arg(ap, int);
@@ -100,17 +68,20 @@ int		ft_va_putchar(va_list ap, t_params *params)
 
 int		ft_va_putstr(va_list ap, t_params *params)
 {
-	char 	*s;
+	char	*s;
+	char	*res;
 
 	s = va_arg(ap, char*);
 	if (!s)
-	{
-		s = ft_strnew(6);
-		ft_strcpy(s, "(null)");
-	}
+		s = "(null)";
+	res = ft_strdup(s);
 	if (params->flag & precision && params->precision < (int)ft_strlen(s))
-		s = ft_strsub(s, 0, (size_t)params->precision);
+	{
+		s = ft_strsub(res, 0, (size_t)params->precision);
+		free(res);
+		res = s;
+	}
 	if (params->flag & hash)
 		params->flag = params->flag & ~(1 << (5 - 1));
-	return (ft_format_str(s, params));
+	return (ft_format_str(res, params));
 }

@@ -15,9 +15,9 @@
 int		ft_va_putbinary(va_list ap, t_params *params)
 {
 	uintmax_t	nbr;
-	int 		len;
+	int			len;
 	char		*res;
-	char 		*res_tmp;
+	char		*res_tmp;
 
 	nbr = convert_unsigned_arg(ap, params);
 	len = count_unsigned_digits(nbr, 2);
@@ -38,7 +38,7 @@ int		ft_va_putbinary(va_list ap, t_params *params)
 	return (ft_format_str(res, params));
 }
 
-char 	*get_str_22_to_32(char c)
+char	*get_str_22_to_32(char c)
 {
 	if (c == 22)
 		return ("[syn]");
@@ -67,7 +67,7 @@ char 	*get_str_22_to_32(char c)
 	return (NULL);
 }
 
-char 	*get_str_11_to_21(char c)
+char	*get_str_11_to_21(char c)
 {
 	if (c == 11)
 		return ("[vt]");
@@ -127,67 +127,15 @@ int		ft_va_putnonprint(va_list ap, t_params *params)
 {
 	char	*s;
 	char	*res;
-	int 	len;
+	int		len;
 
 	s = va_arg(ap, char*);
-	len = sizeof(s) / 2;
+	len = (int)ft_strlen(s);
 	res = ft_strnew(1);
 	while (len--)
 	{
 		res = ft_strjoin(res, ft_strdup(get_str(*s)));
 		s++;
 	}
-	return (ft_format_str(res, params));
-}
-
-char 	*get_time(char *str, struct tm *tm_info)
-{
-	char *res;
-
-	str++;
-	res = ft_strnew(*str == 'y' ? 4 : 2);
-	if (*str == 'd')
-		int_to_str(res, tm_info->tm_mday, 10, NULL);
-	if (*str == 'm')
-		int_to_str(res, tm_info->tm_mon, 10, NULL);
-	if (*str == 'y')
-		int_to_str(res, 1900 + tm_info->tm_year, 10, NULL);
-	if (*str == 'H')
-		int_to_str(res, tm_info->tm_hour, 10, NULL);
-	if (*str == 'M')
-		int_to_str(res, tm_info->tm_min, 10, NULL);
-	if (*str == 'S')
-		int_to_str(res, tm_info->tm_sec, 10, NULL);
-	return (res);
-}
-
-int 	ft_va_puttime(va_list ap, t_params *params)
-{
-	time_t		local;
-	struct tm	*tm_info;
-	char 		*str;
-	char 		*res;
-	int 		i;
-
-	i = 0;
-	time(&local);
-	tm_info = localtime(&local);
-	str = va_arg(ap, char*);
-	res = ft_strnew(ft_strlen(str) * 2);
-	while (*str)
-	{
-		if (*str == '%')
-		{
-			ft_strcpy(&res[i], get_time(str, tm_info));
-			while (res[i + 1])
-				i++;
-			str++;
-		}
-		else
-			res[i] = *str;
-		i++;
-		str++;
-	}
-	res[i] = '\0';
 	return (ft_format_str(res, params));
 }

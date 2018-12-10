@@ -15,9 +15,9 @@
 int	ft_va_putpointer(va_list ap, t_params *params)
 {
 	uintmax_t	addr;
-	char 		*res;
-	size_t 		len;
-	char 		*res_tmp;
+	char		*res;
+	size_t		len;
+	char		*res_tmp;
 
 	addr = va_arg(ap, uintmax_t);
 	len = (size_t)count_unsigned_digits(addr, 16);

@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-intmax_t convert_signed_arg(va_list ap, t_params *params)
+intmax_t	convert_signed_arg(va_list ap, t_params *params)
 {
 	intmax_t nbr;
 
@@ -34,12 +34,12 @@ intmax_t convert_signed_arg(va_list ap, t_params *params)
 	return (nbr);
 }
 
-int 	ft_va_putnbr(va_list ap, t_params *params)
+int			ft_va_putnbr(va_list ap, t_params *params)
 {
 	char		*str;
-	char 		*str_tmp;
+	char		*str_tmp;
 	intmax_t	nbr;
-	size_t 		len;
+	size_t		len;
 
 	nbr = convert_signed_arg(ap, params);
 	len = (size_t)count_signed_digits(nbr, 10);

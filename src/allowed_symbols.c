@@ -12,17 +12,17 @@
 
 #include "ft_printf.h"
 
-int 	flag_list(char c)
+int		flag_list(char c)
 {
 	return (c == '+' || c == '-' || c == ' ' || c == '0' || c == '#');
 }
 
-int 	convert_list(char c)
+int		convert_list(char c)
 {
 	return (c == 'h' || c == 'l' || c == 'j' || c == 'L' || c == 'z');
 }
 
-int 	allowed_symbols(char *format)
+int		allowed_symbols(char *format)
 {
 	if (!flag_list(*format) && *format != '*' && *format != '.'
 		&& type_id(*format) == -1 && !convert_list(*format)

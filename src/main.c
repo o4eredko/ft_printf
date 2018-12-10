@@ -16,6 +16,8 @@
 
 int main(void)
 {
-	ft_printf("%k\n", "%d.%m.%y: %H:%M:%S\n");
+	int m =  printf("|%05p|\n", 0);
+ int n = ft_printf("|%05p|\n", 0);
+	printf("Original ret: %d\nMy ret: %d\n", m, n);
 	return (0);
 }
