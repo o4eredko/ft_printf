@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include <ft_printf.h>
 
-uintmax_t convert_unsigned_arg(va_list ap, t_params *params)
+uintmax_t	convert_unsigned_arg(va_list ap, t_params *params)
 {
 	uintmax_t nbr;
 
@@ -34,11 +34,11 @@ uintmax_t convert_unsigned_arg(va_list ap, t_params *params)
 	return (nbr);
 }
 
-int 	ft_va_putunbr(va_list ap, t_params *params)
+int			ft_va_putunbr(va_list ap, t_params *params)
 {
-	char				*str;
-	uintmax_t 			nbr;
-	size_t 				len;
+	char		*str;
+	uintmax_t	nbr;
+	size_t		len;
 
 	nbr = convert_unsigned_arg(ap, params);
 	len = (size_t)count_unsigned_digits(nbr, 10);
@@ -53,12 +53,12 @@ int 	ft_va_putunbr(va_list ap, t_params *params)
 	return (ft_format_str(str, params));
 }
 
-int		ft_va_putoctal(va_list ap, t_params *params)
+int			ft_va_putoctal(va_list ap, t_params *params)
 {
-	char				*str;
-	char 				*str_tmp;
-	uintmax_t 			nbr;
-	size_t 				len;
+	char		*str;
+	char		*str_tmp;
+	uintmax_t	nbr;
+	size_t		len;
 
 	nbr = convert_unsigned_arg(ap, params);
 	len = (size_t)count_unsigned_digits(nbr, 8);
@@ -68,7 +68,8 @@ int		ft_va_putoctal(va_list ap, t_params *params)
 	str_tmp = str;
 	if (!(!nbr && (params->flag & precision && !params->precision)))
 		uint_to_str(str, nbr, 8, params);
-	if (params->flag & hash && (nbr > 0 || params->flag & precision) && (!(params->flag & precision)
+	if (params->flag & hash && (nbr > 0 || params->flag & precision)
+		&& (!(params->flag & precision)
 	|| params->precision <= count_unsigned_digits(nbr, 8)))
 	{
 		str = ft_strnew(1);
@@ -80,12 +81,12 @@ int		ft_va_putoctal(va_list ap, t_params *params)
 	return (ft_format_str(str, params));
 }
 
-int	ft_va_puthex(va_list ap, t_params *params)
+int			ft_va_puthex(va_list ap, t_params *params)
 {
-	char				*str;
-	char				*str_tmp;
-	uintmax_t 			nbr;
-	size_t 				len;
+	char		*str;
+	char		*str_tmp;
+	uintmax_t	nbr;
+	size_t		len;
 
 	nbr = convert_unsigned_arg(ap, params);
 	len = (size_t)count_unsigned_digits(nbr, 16);
@@ -103,32 +104,7 @@ int	ft_va_puthex(va_list ap, t_params *params)
 	}
 	if (params->flag & zero && params->flag & precision)
 		params->flag = params->flag & ~(1 << (3 - 1));
-	return (ft_format_str(str, params));
-}
-
-int	ft_va_l_puthex(va_list ap, t_params *params)
-{
-	char				*str;
-	char 				*str_tmp;
-	uintmax_t 			nbr;
-	size_t 				len;
-
-	nbr = convert_unsigned_arg(ap, params);
-	len = (size_t)count_unsigned_digits(nbr, 16);
-	if (params->flag & precision)
-		len = (int)len < params->precision ? params->precision : len;
-	str = ft_strnew(len);
-	str_tmp = str;
-	if (!(!nbr && (params->flag & precision && !params->precision)))
-		uint_to_str(str, nbr, 16, params);
-	str_toupper(str);
-	if (params->flag & hash && nbr > 0)
-	{
-		str = ft_strnew(2);
-		ft_strcpy(str, "0X");
-		str = ft_strjoin(str, str_tmp);
-	}
-	if (params->flag & zero && params->flag & precision)
-		params->flag = params->flag & ~(1 << (3 - 1));
+	if (params->type == 'X')
+		str_toupper(str);
 	return (ft_format_str(str, params));
 }

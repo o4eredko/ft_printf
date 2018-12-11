@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include <ft_printf.h>
 
 void	fill_function_arr(int (**f)(va_list ap, t_params *params))
 {
@@ -20,26 +20,27 @@ void	fill_function_arr(int (**f)(va_list ap, t_params *params))
 	f[3] = &ft_va_putunbr;
 	f[4] = &ft_va_putoctal;
 	f[5] = &ft_va_puthex;
-	f[6] = &ft_va_l_puthex;
-	f[7] = &ft_va_putpointer;
-	f[8] = &ft_va_putfloat;
-	f[9] = &ft_va_putbinary;
-	f[10] = &ft_va_putnonprint;
-//	f[11] = &ft_va_putsnotation;
+	f[6] = &ft_va_putpointer;
+	f[7] = &ft_va_putfloat;
+	f[8] = &ft_va_putbinary;
+	f[9] = &ft_va_putnonprint;
 }
 
-int		type_id(char c)
+int		type_id(char c, t_params *params)
 {
 	char	*str;
 	int		i;
 
 	i = 0;
-	str = "csduoxXpfbr";
+	str = "csduoxpfFbr";
 	while (str[i])
 	{
-		if (c == str[i] || (c == 'i' && str[i] == 'd')
-		|| (c == 'F' && str[i] == 'f'))
+		if (c == str[i] || (c == 'i' && str[i] == 'd') || c == str[i] - 32)
+		{
+			if (params)
+				params->type = c;
 			return (i);
+		}
 		i++;
 	}
 	return (-1);

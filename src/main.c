@@ -10,14 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../includes/ft_printf.h"
 #include <stdio.h>
-#include <time.h>
 
-int main(void)
+int	main(void)
 {
-	int m =  printf("|%05p|\n", 0);
- int n = ft_printf("|%05p|\n", 0);
+	int n;
+	int m;
+
+	n = ft_printf("%010.%\n");
+	m = printf("%010.%\n");
 	printf("Original ret: %d\nMy ret: %d\n", m, n);
 	return (0);
 }

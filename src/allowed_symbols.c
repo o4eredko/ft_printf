@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include <ft_printf.h>
 
 int		flag_list(char c)
 {
@@ -25,7 +25,7 @@ int		convert_list(char c)
 int		allowed_symbols(char *format)
 {
 	if (!flag_list(*format) && *format != '*' && *format != '.'
-		&& type_id(*format) == -1 && !convert_list(*format)
+		&& type_id(*format, NULL) == -1 && !convert_list(*format)
 		&& !ft_isdigit(*format) && *format != '%')
 		return (0);
 	return (1);

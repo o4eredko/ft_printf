@@ -10,13 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include <ft_printf.h>
 
 void	skip_flag_symbols(t_params *params, char **s)
 {
 	int len;
 
-	len = 1;
+	len = 0;
+	if ((params->flag & hash && (params->type == 'o'))
+		|| **s == '+' || **s == '-' || **s == ' ')
+		len = 1;
 	if (*(*s + 1) == 'x' || *(*s + 1) == 'X' || *(*s + 1) == 'b')
 		len = 2;
 	ft_putnstr(*s, len);
@@ -38,7 +41,7 @@ int		ft_format_str(char *s, t_params *params)
 	if (params->flag & width && !(params->flag & minus) && params->flag & zero)
 	{
 		if (params->flag & hash || *s == '+' || *s == '-' || *s == ' '
-		|| (*s == '0' && *(s + 1) == 'x'))
+		|| params->type == 'p')
 			skip_flag_symbols(params, &s);
 		print_padding(params->width - (int)ft_strlen(s), '0');
 	}

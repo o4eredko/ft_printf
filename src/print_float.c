@@ -10,19 +10,21 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include <ft_printf.h>
 
-double		ft_pow(double nbr, int pow)
+void		get_limit(char *res, long double nbr, t_params *params)
 {
-	double res;
-
-	res = 1;
-	while (pow)
-	{
-		res = pow < 0 ? res / nbr : res * nbr;
-		pow += pow < 0 ? 1 : -1;
-	}
-	return (res);
+	if (nbr != nbr)
+		ft_strcpy(res, "nan");
+	else if (nbr == 1.0 / 0.0)
+		ft_strcpy(res, "inf");
+	else if (nbr == -1.0 / 0.0)
+		ft_strcpy(res, "inf");
+	*(res + 3) = '\0';
+	if (params->type == 'F')
+		str_toupper(res);
+	if (params->flag & zero)
+		params->flag = params->flag & ~(1 << (3 - 1));
 }
 
 int			ft_int_to_str(intmax_t nbr, char *res, int precision)
@@ -46,10 +48,16 @@ void		ft_dtoa(long double nbr, char *res, int precision)
 	int			i;
 	int			k;
 
+	if (!precision)
+	{
+		if (!((int)(nbr + 0.5 / ft_pow(10, precision)) % 2))
+			nbr += 0.5 / ft_pow(10, precision);
+	}
+	else
+		nbr += 0.5 / ft_pow(10, precision);
 	i = ft_int_to_str((intmax_t)nbr, res, 1);
 	nbr -= (intmax_t)nbr;
 	k = -1;
-	nbr += 0.5 / ft_pow(10, precision);
 	if (precision)
 	{
 		res[i++] = '.';
@@ -63,6 +71,34 @@ void		ft_dtoa(long double nbr, char *res, int precision)
 	res[i] = '\0';
 }
 
+char		*putfloat(long double nbr, t_params *params)
+{
+	char	*res;
+
+	res = ft_strnew(((size_t)count_signed_digits((intmax_t)nbr, 10)
+		+ 1 + (params->flag & precision ? params->precision : 6)));
+	if ((nbr < 0 || (!nbr && 1.0 / nbr == 1.0 / -0.0) || params->flag & plus
+		|| params->flag & space) && nbr == nbr)
+	{
+		if (nbr < 0 || (!nbr && 1.0 / nbr == 1.0 / -0.0))
+			*res++ = '-';
+		else
+			*res++ = (char)(params->flag & space
+				&& !(params->flag & plus) ? ' ' : '+');
+	}
+	if (nbr != nbr || nbr == 1.0 / 0.0 || nbr == -1.0 / 0.0)
+		get_limit(res, nbr, params);
+	else
+		ft_dtoa(ABS(nbr), res, params->flag & precision
+			? params->precision : 6);
+	if (params->flag & precision && !params->precision && params->flag & hash)
+		*(res + ft_strlen(res)) = '.';
+	if ((nbr < 0 || (!nbr && 1.0 / nbr == 1.0 / -0.0) || params->flag & plus
+		|| params->flag & space) && nbr == nbr)
+		res--;
+	return (res);
+}
+
 int			ft_va_putfloat(va_list ap, t_params *params)
 {
 	long double	nbr;
@@ -72,69 +108,6 @@ int			ft_va_putfloat(va_list ap, t_params *params)
 		nbr = va_arg(ap, long double);
 	else
 		nbr = va_arg(ap, double);
-	res = ft_strnew(((size_t)count_signed_digits((intmax_t)nbr, 10)
-			+ 1 + (params->flag & precision ? params->precision : 6)));
-	if (nbr < 0 || params->flag & plus || params->flag & space)
-	{
-		if (nbr < 0)
-			*res++ = '-';
-		else
-			*res++ = (char)(params->flag & space && !(params->flag & plus) ? ' ' : '+');
-	}
-	ft_dtoa(ABS(nbr), res, params->flag & precision
-		? params->precision : 6);
-	if (nbr < 0 || params->flag & plus || params->flag & space)
-		res--;
-	return (ft_format_str(res, params));
-}
-
-void	ft_dtosn(long double nbr, char *res, int precision)
-{
-	int exp;
-	int i;
-
-	i = 0;
-	exp = 0;
-	while (nbr / ft_pow(10, exp) >= 10 || nbr / ft_pow(10, exp) < 1)
-		exp += nbr < 1 ? -1 : 1;
-	nbr /= ft_pow(10, exp);
-	res[i++] = (char)((intmax_t)(nbr) + '0');
-	nbr -= (intmax_t)nbr;
-	nbr += 0.5 / ft_pow(10, precision);
-	if (precision)
-	{
-		res[i++] = '.';
-		while (precision--)
-		{
-			nbr *= 10;
-			res[i++] = (char)((int)nbr + 48);
-			nbr -= (int)nbr;
-		}
-	}
-	ft_strcpy(&res[i], exp < 0 ? "e-" : "e+");
-	i += 2;
-	ft_int_to_str(ABS(exp), &res[i], 2);
-}
-
-int 	ft_va_putsnotation(va_list ap, t_params *params)
-{
-	char		*res;
-	long double	nbr;
-
-	if (params->e_convert == L)
-		nbr = va_arg(ap, long double);
-	else
-		nbr = va_arg(ap, double);
-	res = ft_strnew(6 + params->flag & precision ? (size_t)params->precision : 6);
-	if (nbr < 0 || params->flag & plus || params->flag & space)
-	{
-		if (nbr < 0)
-			*res++ = '-';
-		else
-			*res++ = (char)(params->flag & space && !(params->flag & plus) ? ' ' : '+');
-	}
-	ft_dtosn(ABS(nbr), res, params->flag & precision ? params->precision : 6);
-	if (nbr < 0 || params->flag & plus || params->flag & space)
-		res--;
+	res = putfloat(nbr, params);
 	return (ft_format_str(res, params));
 }
