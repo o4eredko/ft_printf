@@ -23,12 +23,11 @@ SRC = ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memmove.c ft_memchr.c\
 	ft_putendl.c ft_putnbr.c ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c\
 	ft_putnbr_fd.c ft_lstnew.c ft_lstdelone.c ft_lstdel.c ft_lstadd.c ft_lstiter.c\
 	ft_lstmap.c ft_itoa_base.c ft_lstrev.c ft_cycle_detector.c ft_print_memory.c\
-	ft_pow.c ft_strtoupper.c  ft_strrev.c\
+	ft_pow.c ft_strtoupper.c ft_strtolower.c  ft_strrev.c\
 	get_next_line.c $(addprefix ./printf_src/, $(PRINTF))
 
-PRINTF = ft_printf.c convert_to_str.c handlers.c print_int.c\
-	print_pointer.c print_str.c add_funcs.c\
-	print_uint.c print_float.c bonus_types.c print_funcs.c
+PRINTF = ft_printf.c convert_to_str.c handlers.c print_dp.c print_str.c add_funcs.c\
+	print_uint.c print_float.c bonus_types.c
 
 BINARY = $(SRC:.c=.o)
 

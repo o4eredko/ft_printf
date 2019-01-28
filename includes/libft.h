@@ -103,6 +103,7 @@ void				ft_quick_sort(int **tab, int low, int high);
 int					get_next_line(const int fd, char **line);
 int					ft_printf(const char *format, ...);
 void				ft_strtoupper(char *str);
+void				ft_strtolower(char *str);
 double				ft_pow(double nbr, int pow);
 void				ft_strrev(char *str, int len);
 

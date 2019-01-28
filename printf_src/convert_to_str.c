@@ -83,3 +83,16 @@ void		int_to_str(char *res, intmax_t nbr, int base, t_fmt *fmt)
 		res[i++] = '-';
 	ft_strrev(res, i);
 }
+
+void	print_buf(t_fmt *fmt, char *src, int size)
+{
+	while (size--)
+	{
+		if (fmt->buf_i == BUFF - 1)
+		{
+			write(1, fmt->buf, BUFF);
+			fmt->buf_i = 0;
+		}
+		fmt->buf[fmt->buf_i++] = *src++;
+	}
+}

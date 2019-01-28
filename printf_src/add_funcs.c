@@ -34,14 +34,6 @@ char		*ft_strjoin_free(char *s1, char *s2)
 	return (res_tmp);
 }
 
-void		init_fmt(t_fmt *fmt)
-{
-	fmt->conv = 0;
-	fmt->f = 0;
-	fmt->flag = 0;
-	fmt->type = 0;
-}
-
 intmax_t	ft_power(intmax_t nb, int power)
 {
 	intmax_t	res;
@@ -62,4 +54,10 @@ char	*ft_strcp(char *dst, const char *src)
 	while (*src)
 		*dst_tmp++ = *src++;
 	return (dst);
+}
+
+void	print_padding(t_fmt *fmt, int size, char c)
+{
+	while (size-- > 0)
+		print_buf(fmt, &c, 1);
 }

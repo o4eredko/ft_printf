@@ -12,6 +12,13 @@
 
 #include <ft_printf.h>
 
+void		init_fmt(t_fmt *fmt)
+{
+    fmt->conv = 0;
+    fmt->flag = 0;
+    fmt->type = 0;
+}
+
 void	fill_farr(int (**f)(va_list ap, t_fmt *fmt))
 {
 	f[0] = &ft_va_putchar;
@@ -34,8 +41,9 @@ int		type_id(char c, t_fmt *fmt)
 	i = -1;
 	if (c == 'D' || c == 'U' || c == 'O')
 	{
-		c -= 32;
-		fmt->conv = l;
+		c += 32;
+		if (fmt)
+			fmt->conv = l;
 	}
 	str = "csduoxpfbr";
 	while (str[++i])
@@ -84,7 +92,7 @@ int			ft_printf(const char *format, ...)
 	t_fmt	fmt;
 
 	ret = 0;
-	fmt.str = ft_strdup(format);
+	fmt.str = (char*)format;
 	va_start(ap, format);
 	while (*(fmt.str))
 	{
@@ -94,12 +102,13 @@ int			ft_printf(const char *format, ...)
 		if (fmt.str != next)
 		{
 			ret += next - fmt.str;
-			write(1, fmt.str, next - fmt.str);
+			print_buf(&fmt, fmt.str, (int)(next - fmt.str));
 			fmt.str += next - fmt.str;
 		}
 		else
 			ret += handle_expression(ap, &fmt);
 	}
+	write(1, fmt.buf, (size_t)fmt.buf_i);
 	va_end(ap);
 	return (ret);
 }

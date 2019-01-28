@@ -34,6 +34,7 @@
 # define BMAGENTA(string) "\x1b[1;35m" string "\x1b[0m"
 # define CYAN(string) "\x1b[0;36m" string "\x1b[0m"
 # define BCYAN(string) "\x1b[1;36m" string "\x1b[0m"
+# define BUFF 255
 
 typedef	enum 	e_flags{
 	plus = 1,
@@ -64,15 +65,11 @@ typedef struct	s_fmt
 	int			flag;
 	char		type;
 	char		*str;
-	char		buf[255];
-	t_flags		f;
+	char		buf[BUFF];
+	int			buf_i;
 	t_convert	conv;
 }				t_fmt;
 
-void			handle_length(t_fmt *fmt);
-void			handle_precision(t_fmt *fmt, va_list ap);
-void			handle_width(t_fmt *fmt, va_list ap);
-void			handle_flags(t_fmt *fmt);
 int				ft_va_putchar(va_list ap, t_fmt *fmt);
 int				ft_va_putstr(va_list ap, t_fmt *fmt);
 int				ft_va_putnbr(va_list ap, t_fmt *fmt);
@@ -83,9 +80,13 @@ int				ft_va_putpointer(va_list ap, t_fmt *fmt);
 int				ft_va_putfloat(va_list ap, t_fmt *fmt);
 int				ft_va_putbinary(va_list ap, t_fmt *fmt);
 int				ft_va_putnonprint(va_list ap, t_fmt *fmt);
-void			print_padding(int size, char c);
-int				ft_format_str(char *s, t_fmt *fmt);
 int				print_percent(char c, t_fmt *fmt);
+int				ft_format_str(char *s, t_fmt *fmt);
+void			handle_length(t_fmt *fmt);
+void			handle_precision(t_fmt *fmt, va_list ap);
+void			handle_width(t_fmt *fmt, va_list ap);
+void			handle_flags(t_fmt *fmt);
+void			print_padding(t_fmt *fmt, int size, char c);
 intmax_t		ft_power(intmax_t nb, int power);
 int				allowed_s(char *format);
 int				count_unsigned_digits(uintmax_t value, int base);
@@ -97,7 +98,7 @@ void			int_to_str(char *res, intmax_t nbr,
 char			*ft_strcp(char *dst, const char *src);
 char			*ft_strjoin_free(char *s1, char *s2);
 uintmax_t		convert_unsigned_arg(va_list ap, t_fmt *fmt);
-void			init_fmt(t_fmt *fmt);
 int				type_id(char c, t_fmt *fmt);
+void	        print_buf(t_fmt *fmt, char *src, int size);
 
 #endif
