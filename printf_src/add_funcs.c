@@ -46,7 +46,7 @@ intmax_t	ft_power(intmax_t nb, int power)
 	return (res);
 }
 
-char	*ft_strcp(char *dst, const char *src)
+char		*ft_strcp(char *dst, const char *src)
 {
 	char *dst_tmp;
 
@@ -56,7 +56,7 @@ char	*ft_strcp(char *dst, const char *src)
 	return (dst);
 }
 
-void	print_padding(t_fmt *fmt, int size, char c)
+void		print_padding(t_fmt *fmt, int size, char c)
 {
 	while (size-- > 0)
 		print_buf(fmt, &c, 1);

@@ -62,7 +62,7 @@ int		ft_va_putchar(va_list ap, t_fmt *fmt)
 	if (fmt->flag & width)
 		len = fmt->width > len ? fmt->width : len;
 	if (fmt->flag & width && !(fmt->flag & minus))
-		print_padding(fmt, fmt->width - 1, (char)(fmt->flag & zero ? '0' : ' '));
+		print_padding(fmt, fmt->width - 1, (fmt->flag & zero) ? '0' : ' ');
 	print_buf(fmt, &c, 1);
 	if (fmt->flag & width && fmt->flag & minus)
 		print_padding(fmt, fmt->width - 1, ' ');
@@ -91,16 +91,16 @@ int		ft_va_putstr(va_list ap, t_fmt *fmt)
 
 int		print_percent(char c, t_fmt *fmt)
 {
-    int len;
+	int len;
 
-    len = c ? 1 : 0;
-    if (fmt->flag & width)
-        len = fmt->width > len ? fmt->width : len;
-    if (fmt->flag & width && !(fmt->flag & minus))
-        print_padding(fmt, fmt->width - 1, fmt->flag & zero ? '0' : ' ');
-    if (c)
-        print_buf(fmt, &c, 1);
-    if (fmt->flag & width && fmt->flag & minus)
-        print_padding(fmt, fmt->width - 1, ' ');
-    return (len);
+	len = c ? 1 : 0;
+	if (fmt->flag & width)
+		len = fmt->width > len ? fmt->width : len;
+	if (fmt->flag & width && !(fmt->flag & minus))
+		print_padding(fmt, fmt->width - 1, fmt->flag & zero ? '0' : ' ');
+	if (c)
+		print_buf(fmt, &c, 1);
+	if (fmt->flag & width && fmt->flag & minus)
+		print_padding(fmt, fmt->width - 1, ' ');
+	return (len);
 }

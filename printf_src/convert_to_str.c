@@ -12,7 +12,7 @@
 
 #include <ft_printf.h>
 
-int			count_unsigned_digits(uintmax_t value, int base)
+int		count_unsigned_digits(uintmax_t value, int base)
 {
 	int digits;
 
@@ -27,7 +27,7 @@ int			count_unsigned_digits(uintmax_t value, int base)
 	return (digits);
 }
 
-int			count_signed_digits(intmax_t value, int base)
+int		count_signed_digits(intmax_t value, int base)
 {
 	int digits;
 
@@ -42,7 +42,7 @@ int			count_signed_digits(intmax_t value, int base)
 	return (digits);
 }
 
-void		uint_to_str(char *res, uintmax_t nbr, int base, t_fmt *fmt)
+void	uint_to_str(char *res, uintmax_t nbr, int base, t_fmt *fmt)
 {
 	char	*base_digits;
 	int		i;
@@ -61,7 +61,7 @@ void		uint_to_str(char *res, uintmax_t nbr, int base, t_fmt *fmt)
 	ft_strrev(res, i);
 }
 
-void		int_to_str(char *res, intmax_t nbr, int base, t_fmt *fmt)
+void	int_to_str(char *res, intmax_t nbr, int base, t_fmt *fmt)
 {
 	char		*base_digits;
 	int			i;

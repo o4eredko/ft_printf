@@ -20,7 +20,7 @@ int		allowed_s(char *str)
 	return (1);
 }
 
-void		handle_flags(t_fmt *fmt)
+void	handle_flags(t_fmt *fmt)
 {
 	char	*flags;
 	int		i;
@@ -36,7 +36,7 @@ void		handle_flags(t_fmt *fmt)
 	}
 }
 
-void		handle_width(t_fmt *fmt, va_list ap)
+void	handle_width(t_fmt *fmt, va_list ap)
 {
 	if (*(fmt->str) == '*')
 	{
@@ -58,7 +58,7 @@ void		handle_width(t_fmt *fmt, va_list ap)
 	}
 }
 
-void		handle_precision(t_fmt *fmt, va_list ap)
+void	handle_precision(t_fmt *fmt, va_list ap)
 {
 	if (*(fmt->str) == '.' && *(fmt->str + 1) == '*')
 	{
@@ -82,7 +82,7 @@ void		handle_precision(t_fmt *fmt, va_list ap)
 	}
 }
 
-void		handle_length(t_fmt *fmt)
+void	handle_length(t_fmt *fmt)
 {
 	if (*(fmt->str) == 'h' && *(fmt->str + 1) != 'h' && fmt->conv < h)
 		fmt->conv = h;

@@ -12,11 +12,11 @@
 
 #include <ft_printf.h>
 
-void		init_fmt(t_fmt *fmt)
+void	init_fmt(t_fmt *fmt)
 {
-    fmt->conv = 0;
-    fmt->flag = 0;
-    fmt->type = 0;
+	fmt->conv = 0;
+	fmt->flag = 0;
+	fmt->type = 0;
 }
 
 void	fill_farr(int (**f)(va_list ap, t_fmt *fmt))
@@ -57,7 +57,7 @@ int		type_id(char c, t_fmt *fmt)
 	return (-1);
 }
 
-static int	handle_expression(va_list ap, t_fmt *fmt)
+int		handle_expression(va_list ap, t_fmt *fmt)
 {
 	int ret;
 	int (*f[10])(va_list, t_fmt*);
@@ -65,6 +65,7 @@ static int	handle_expression(va_list ap, t_fmt *fmt)
 	fill_farr(f);
 	ret = 0;
 	fmt->str++;
+	init_fmt(fmt);
 	while (*(fmt->str) && allowed_s(fmt->str) &&
 		type_id(*(fmt->str), fmt) == -1 && *(fmt->str) != '%')
 	{
@@ -84,7 +85,7 @@ static int	handle_expression(va_list ap, t_fmt *fmt)
 	return (ret);
 }
 
-int			ft_printf(const char *format, ...)
+int		ft_printf(const char *format, ...)
 {
 	va_list	ap;
 	int		ret;
@@ -92,17 +93,17 @@ int			ft_printf(const char *format, ...)
 	t_fmt	fmt;
 
 	ret = 0;
-	fmt.str = (char*)format;
+	fmt.str = ft_strdup(format);
 	va_start(ap, format);
+	fmt.buf_i = 0;
 	while (*(fmt.str))
 	{
-		init_fmt(&fmt);
 		if (!(next = ft_strchr(fmt.str, '%')))
 			next = ft_strchr(fmt.str, '\0');
 		if (fmt.str != next)
 		{
-			ret += next - fmt.str;
 			print_buf(&fmt, fmt.str, (int)(next - fmt.str));
+			ret += next - fmt.str;
 			fmt.str += next - fmt.str;
 		}
 		else

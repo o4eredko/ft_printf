@@ -63,7 +63,7 @@ int			ft_va_putnbr(va_list ap, t_fmt *fmt)
 	return (ft_format_str(str, fmt));
 }
 
-int	ft_va_putpointer(va_list ap, t_fmt *fmt)
+int			ft_va_putpointer(va_list ap, t_fmt *fmt)
 {
 	uintmax_t	addr;
 	char		*res;
@@ -73,7 +73,7 @@ int	ft_va_putpointer(va_list ap, t_fmt *fmt)
 	addr = va_arg(ap, uintmax_t);
 	len = (size_t)count_unsigned_digits(addr, 16);
 	len = (size_t)(fmt->flag & precision && fmt->prec > (int)len ?
-				   fmt->prec : (int)len);
+		fmt->prec : (int)len);
 	res_tmp = ft_strnew(len);
 	uint_to_str(res_tmp, addr, 16, fmt);
 	if (!addr && fmt->flag & precision && !fmt->prec)

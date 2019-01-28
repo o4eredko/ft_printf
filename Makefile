@@ -34,25 +34,15 @@ BINARY = $(SRC:.c=.o)
 all: $(NAME)
 
 $(NAME): $(BINARY)
-	ar rc $(NAME) $(BINARY)
+	@ar rc $(NAME) $(BINARY)
 
 %.o: %.c
 	gcc -Wall -W -Werror -c -o $@ $< -I ./includes/
 
 clean:
-	/bin/rm -f $(BINARY)
+	@/bin/rm -f $(BINARY)
 
 fclean: clean
-	/bin/rm -f $(NAME)
+	@/bin/rm -f $(NAME)
 
 re: fclean all
-
-run: all
-	@clear
-	@gcc main.c libftprintf.a
-	@./a.out
-
-time: all
-	@clear
-	@gcc main.c libftprintf.a
-	@time -v ./a.out

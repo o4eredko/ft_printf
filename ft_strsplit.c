@@ -23,10 +23,8 @@ static int	count_words(char const *s, char c)
 	i = -1;
 	len = ft_strlen(s);
 	while (++i < len)
-	{
 		if (s[i] != c && (s[i + 1] == c || s[i + 1] == '\0'))
 			words++;
-	}
 	return (words);
 }
 

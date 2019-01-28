@@ -20,8 +20,8 @@
 # include "libft.h"
 # define FLAGS "+-0 #"
 # define ABS(x) (((x) < 0) ? -(x) : (x))
-# define FL(c) (((c) == '+' || (c) == '-' || (c) == '0' || (c) == ' ' || (c) == '#') ? 1 : 0)
-# define CL(c) (((c) == 'h' || (c) == 'l' || (c) == 'j' || (c) == 'L' || (c) == 'z') ? 1 : 0)
+# define FL(c) (c == '+' || c == '-' || c == '0'|| c == ' ' || c == '#' ? 1 : 0)
+# define CL(c) (c == 'h' || c == 'l' || c == 'j'|| c == 'L' || c == 'z' ? 1 : 0)
 # define RED(string) "\x1b[31m" string "\x1b[0m"
 # define BRED(string) "\x1b[1;31m" string "\x1b[0m"
 # define GREEN(string) "\x1b[0;32m" string "\x1b[0m"
@@ -36,7 +36,7 @@
 # define BCYAN(string) "\x1b[1;36m" string "\x1b[0m"
 # define BUFF 255
 
-typedef	enum 	e_flags{
+typedef	enum	e_flags{
 	plus = 1,
 	minus = 2,
 	zero = 4,
@@ -99,6 +99,6 @@ char			*ft_strcp(char *dst, const char *src);
 char			*ft_strjoin_free(char *s1, char *s2);
 uintmax_t		convert_unsigned_arg(va_list ap, t_fmt *fmt);
 int				type_id(char c, t_fmt *fmt);
-void	        print_buf(t_fmt *fmt, char *src, int size);
+void			print_buf(t_fmt *fmt, char *src, int size);
 
 #endif

@@ -15,7 +15,7 @@
 
 static int	count_digits(int value, int base)
 {
-    int digits;
+	int digits;
 
 	digits = 0;
 	if (value < 0 && base == 10)
